@@ -1,0 +1,131 @@
+<div class="layui-fluid">
+  <div class="layui-row">
+    <div class="layui-col-xs12">
+      <div class="layui-card" style="padding: 20px">
+        <form class="layui-form" action="">
+          <div class="layui-form-item" pane="">
+            <label class="layui-form-label">原始复选框</label>
+            <div class="layui-input-block">
+              <input type="checkbox" name="like1[write]" lay-skin="primary" title="写作" checked="">
+              <input type="checkbox" name="like1[read]" lay-skin="primary" title="阅读">
+              <input type="checkbox" name="like1[game]" lay-skin="primary" title="游戏" disabled="">
+            </div>
+          </div>
+          <div class="layui-form-item">
+            <div class="layui-inline">
+              <label class="layui-form-label">分组选择框</label>
+              <div class="layui-input-inline">
+                <select name="quiz">
+                  <option value="">请选择问题</option>
+                  <optgroup label="城市记忆">
+                    <option value="你工作的第一个城市">你工作的第一个城市</option>
+                  </optgroup>
+                  <optgroup label="学生时代">
+                    <option value="你的工号">你的工号</option>
+                    <option value="你最喜欢的老师">你最喜欢的老师</option>
+                  </optgroup>
+                </select>
+              </div>
+              <div class="layui-input-inline">
+                <select name="quiz">
+                  <option value="">请选择问题</option>
+                  <optgroup label="城市记忆">
+                    <option value="你工作的第一个城市">你工作的第一个城市</option>
+                  </optgroup>
+                  <optgroup label="学生时代">
+                    <option value="你的工号">你的工号</option>
+                    <option value="你最喜欢的老师">你最喜欢的老师</option>
+                  </optgroup>
+                </select>
+              </div>
+              <div class="layui-input-inline">
+                <select name="quiz">
+                  <option value="">请选择问题</option>
+                  <optgroup label="城市记忆">
+                    <option value="你工作的第一个城市">你工作的第一个城市</option>
+                  </optgroup>
+                  <optgroup label="学生时代">
+                    <option value="你的工号">你的工号</option>
+                    <option value="你最喜欢的老师">你最喜欢的老师</option>
+                  </optgroup>
+                </select>
+              </div>
+            </div>
+          </div>
+        </form>
+        <div class="layui-row">
+          <ul class="layui-tab-title">
+            <li class="layui-this">月视图</li>
+            <li onclick="aaaa()">周视图</li>
+            <li>日视图</li>
+          </ul>
+        </div>
+        <div id="calendar"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  layui.use(['form', 'jquery'], function () {
+    var form = layui.form; //只有执行了这一步，部分表单元素才会自动修饰成功
+    form.render();
+  });
+  console.log(window.localStorage.getItem('token'))
+  $.ajax({
+    method: 'POST',
+    url: 'http://tea.ngrok.eanfang.net:89/biz/api/org/v1/listCompanyByTop',
+    dataType: 'json',
+    headers: {
+      "request-from": "BIZ",
+      "token": window.localStorage.getItem('token'),
+      "Content-Type": "application/json;charset=UTF-8",
+    },
+    data: {
+      pid: 1
+    },
+    success: function (res) {
+
+    }
+  })
+
+
+  function aaaa() {
+    events = [];
+    console.log(events)
+    $('#calendar').fullCalendar('refetchEvents')
+  }
+
+  var events = [
+    {
+      title: 'Event1',
+      start: '2019-03-04'
+    },
+    {
+      title: 'Event2',
+      start: '2019-03-05',
+      color: 'red'
+    }, {
+      title: 'Event3',
+      start: '2019-03-05',
+      color: 'red'
+    }, {
+      title: 'Event4',
+      start: '2019-03-05',
+      color: 'red',
+      backgroundColor: 'aqua',
+      className: 'event'
+    }]
+  $("#calendar").fullCalendar({
+    header: {
+      left:   'title',
+      center: 'month,agendaWeek,agendaDay,listWeek',
+      right:  'today prev,next'
+    },
+    events: events,
+      // etc...
+    color: 'yellow',   // an option!
+    textColor: 'black',
+    timeFormat: '5:00',
+    columnFormat: 'ddd'
+  })
+</script>
