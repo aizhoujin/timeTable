@@ -1,219 +1,261 @@
 <div class="layui-fluid">
-    <div class="layui-row">
-        <div class="layui-col-xs12">
-            <div class="layui-card" style="padding: 20px">
-                <form class="layui-form" action="">
-                    <div class="layui-form-item" pane="">
-                        <label class="layui-form-label">原始复选框</label>
-                        <div class="layui-input-block">
-                            <input type="checkbox" name="like1[write]" lay-skin="primary" title="写作" checked="">
-                            <input type="checkbox" name="like1[read]" lay-skin="primary" title="阅读">
-                            <input type="checkbox" name="like1[game]" lay-skin="primary" title="游戏" disabled="">
-                        </div>
-                    </div>
-                    <div class="layui-form-item">
-                        <div class="layui-inline">
-                            <label class="layui-form-label">分组选择框</label>
-                            <div class="layui-input-inline">
-                                <select name="quiz">
-                                    <option value="">请选择问题</option>
-                                    <optgroup label="城市记忆">
-                                        <option value="你工作的第一个城市">你工作的第一个城市</option>
-                                    </optgroup>
-                                    <optgroup label="学生时代">
-                                        <option value="你的工号">你的工号</option>
-                                        <option value="你最喜欢的老师">你最喜欢的老师</option>
-                                    </optgroup>
-                                </select>
-                            </div>
-                            <div class="layui-input-inline">
-                                <select name="quiz">
-                                    <option value="">请选择问题</option>
-                                    <optgroup label="城市记忆">
-                                        <option value="你工作的第一个城市">你工作的第一个城市</option>
-                                    </optgroup>
-                                    <optgroup label="学生时代">
-                                        <option value="你的工号">你的工号</option>
-                                        <option value="你最喜欢的老师">你最喜欢的老师</option>
-                                    </optgroup>
-                                </select>
-                            </div>
-                            <div class="layui-input-inline">
-                                <select name="quiz">
-                                    <option value="">请选择问题</option>
-                                    <optgroup label="城市记忆">
-                                        <option value="你工作的第一个城市">你工作的第一个城市</option>
-                                    </optgroup>
-                                    <optgroup label="学生时代">
-                                        <option value="你的工号">你的工号</option>
-                                        <option value="你最喜欢的老师">你最喜欢的老师</option>
-                                    </optgroup>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-                <div class="layui-row">
-                    <ul class="layui-tab-title">
-                        <li class="layui-this" onclick="changeView('month')">月视图</li>
-                        <li onclick="changeView('agendaWeek')">周视图</li>
-                        <li onclick="changeView('basicDay')">日视图</li>
-                    </ul>
-                </div>
-                <div class="layui-row">
-
-                </div>
-                <div id="calendar"></div>
+  <div class="layui-row">
+    <div class="layui-col-xs12">
+      <div class="layui-card" style="padding: 20px">
+        <form class="layui-form" action="">
+          <div class="layui-form-item" pane="">
+            <label class="layui-form-label">原始复选框</label>
+            <div class="layui-input-block">
+              <input type="checkbox" name="like1[write]" lay-skin="primary" title="写作" checked="">
+              <input type="checkbox" name="like1[read]" lay-skin="primary" title="阅读">
+              <input type="checkbox" name="like1[game]" lay-skin="primary" title="游戏" disabled="">
             </div>
+          </div>
+          <div class="layui-form-item">
+            <div class="layui-inline">
+              <label class="layui-form-label">分组选择框</label>
+              <div class="layui-input-inline">
+                <select name="quiz">
+                  <option value="">请选择问题</option>
+                  <optgroup label="城市记忆">
+                    <option value="你工作的第一个城市">你工作的第一个城市</option>
+                  </optgroup>
+                  <optgroup label="学生时代">
+                    <option value="你的工号">你的工号</option>
+                    <option value="你最喜欢的老师">你最喜欢的老师</option>
+                  </optgroup>
+                </select>
+              </div>
+              <div class="layui-input-inline">
+                <select name="quiz">
+                  <option value="">请选择问题</option>
+                  <optgroup label="城市记忆">
+                    <option value="你工作的第一个城市">你工作的第一个城市</option>
+                  </optgroup>
+                  <optgroup label="学生时代">
+                    <option value="你的工号">你的工号</option>
+                    <option value="你最喜欢的老师">你最喜欢的老师</option>
+                  </optgroup>
+                </select>
+              </div>
+              <div class="layui-input-inline">
+                <select name="quiz">
+                  <option value="">请选择问题</option>
+                  <optgroup label="城市记忆">
+                    <option value="你工作的第一个城市">你工作的第一个城市</option>
+                  </optgroup>
+                  <optgroup label="学生时代">
+                    <option value="你的工号">你的工号</option>
+                    <option value="你最喜欢的老师">你最喜欢的老师</option>
+                  </optgroup>
+                </select>
+              </div>
+            </div>
+          </div>
+        </form>
+        <div class="layui-row">
+          <div class="layui-col-xs6">
+            <ul class="layui-tab-title timeTab">
+              <li class="layui-this" onclick="changeView('month')">月视图</li>
+              <li onclick="changeView('agendaWeek')">周视图</li>
+              <li onclick="changeView('basicDay')">日视图</li>
+            </ul>
+          </div>
+          <div class="layui-col-xs6">
+            <ul class="legend">
+              <li>
+                <span>今天</span>
+                <div class="color" style="background: #F5ECC1"></div>
+              </li>
+              <li>
+                <span>冲突课程</span>
+                <div class="color" style="background: #F5ECC1"></div>
+              </li>
+              <li>
+                <span>我的课程</span>
+                <div class="color" style="background: #F5ECC1"></div>
+              </li>
+              <li>
+                <span>未上课</span>
+                <div class="color" style="background: #F5ECC1"></div>
+              </li>
+              <li>
+                <span>已上课</span>
+                <div class="color" style="background: #F5ECC1"></div>
+              </li>
+
+            </ul>
+          </div>
+
         </div>
+        <div id="calendar"></div>
+      </div>
     </div>
+  </div>
 </div>
 <script>
-    layui.use(['form', 'jquery'], function () {
-        var form = layui.form; //只有执行了这一步，部分表单元素才会自动修饰成功
-        form.render();
-    });
+  layui.use(['form', 'jquery'], function () {
+    var form = layui.form; //只有执行了这一步，部分表单元素才会自动修饰成功
+    form.render();
+  });
 
-    console.log(window.localStorage.getItem('token'))
-    $.ajax({
-        method: 'POST',
-        url: 'http://api.xiaoxunbang.com/biz/api/org/v1/listCompanyByTop?topId=1',
-        dataType: 'json',
-        headers: {
-            "request-from": "BIZ",
-            "token": window.localStorage.getItem('token'),
-            "Content-Type": "application/json;charset=UTF-8",
-        },
-        success: function (res) {
+  console.log(window.localStorage.getItem('token'))
+  $.ajax({
+    method: 'POST',
+    url: 'http://tea.ngrok.eanfang.net:89/biz/api/org/v1/listCompanyByTop?topId=1',
+    dataType: 'json',
+    headers: {
+      "request-from": "BIZ",
+      "token": window.localStorage.getItem('token'),
+      "Content-Type": "application/json;charset=UTF-8",
+    },
+    success: function (res) {
 
-        }
-    })
-
-    // 切换视图
-    function changeView(data) {
-        $('#calendar').fullCalendar('changeView', data)
     }
+  })
 
-    var events = [
-        {
-            title: 'Event1',
-            start: '2019-03-04',
-            color: '#F8CDC2',
+  // 切换视图
+  function changeView(data) {
+    $('#calendar').fullCalendar('changeView', data)
+  }
+
+  var events = [
+    {
+      title: 'Event1',
+      start: '2019-02-28',
+      color: '#F8CDC2',
+    },
+    {
+      title: 'Event2',
+      start: '2019-03-25',
+      color: '#F8CDC2'
+    }, {
+      title: 'Event2',
+      start: '2019-03-15',
+      color: '#F8CDC2'
+    }, {
+      title: 'Event2',
+      start: '2019-03-05',
+      color: '#F8CDC2'
+    }, {
+      title: 'Event2',
+      start: '2019-03-06 09:00',
+      color: '#F8CDC2'
+    }, {
+      title: 'Event2',
+      start: '2019-03-07',
+      color: '#F8CDC2'
+    }, {
+      title: 'Event2',
+      start: '2019-03-08',
+      color: '#F8CDC2'
+    }, {
+      title: 'Event3',
+      start: '2019-03-05',
+      color: '#EAF1FD'
+    }, {
+      title: 'Event3',
+      start: '2019-03-07',
+      color: '#EAF1FD'
+    }, {
+      title: 'Event3',
+      start: '2019-03-07 09:10',
+      end: '2019-03-07 10:20',
+      color: '#EAF1FD'
+    }, {
+      title: 'Event3',
+      start: '2019-03-07 09:10',
+      end: '2019-03-07 10:20',
+      color: '#EAF1FD'
+    }, {
+      title: 'Event3',
+      start: '2019-03-07 09:10',
+      end: '2019-03-07 10:20',
+      color: '#EAF1FD'
+    }, {
+      title: 'Event3',
+      start: '2019-03-07 07:10',
+      end: '2019-03-07 10:20',
+      color: '#EAF1FD'
+    }, {
+      title: 'Event3',
+      start: '2019-03-07 05:10',
+      end: '2019-03-07 10:20',
+      color: '#EAF1FD'
+    }, {
+      title: 'Event3',
+      start: '2019-03-07 09:10',
+      end: '2019-03-07 10:20',
+      color: '#EAF1FD'
+    }, {
+      title: 'Event3',
+      start: '2019-03-07 12:10',
+      end: '2019-03-07 14:20',
+      color: '#EAF1FD'
+    }, {
+      title: 'Event4',
+      start: '2019-03-07 14:10',
+      end: '2019-03-07 16:20',
+      color: 'red',
+      backgroundColor: '#F5DEFA',
+    }]
+  $("#calendar").fullCalendar({
+    header: {
+      left: "",
+      center: "prev, title, next",
+      right: ""
+    },
+    views: {
+      month: {
+        columnFormat: "ddd",
+        titleFormat: "YYYY年MM月",
+      },
+      week: {
+        columnFormat: "ddd MM月DD日",
+        titleFormat: "YYYY年MM月DD日"
+      }
+    },
+    events: function (statr, end, timezone, callback) {
+      axios({
+        method: 'post',
+        url: 'http://tea.ngrok.eanfang.net:89/biz/api/coursePlan/v2/listByDate',
+        headers: {
+          "request-from": "BIZ",
+          "token": window.localStorage.getItem('token'),
+          "Content-Type": "application/json;charset=UTF-8",
         },
-        {
-            title: 'Event2',
-            start: '2019-03-25',
-            color: '#F8CDC2'
-        },{
-            title: 'Event2',
-            start: '2019-03-15',
-            color: '#F8CDC2'
-        },{
-            title: 'Event2',
-            start: '2019-03-05',
-            color: '#F8CDC2'
-        },{
-            title: 'Event2',
-            start: '2019-03-06 09:00',
-            color: '#F8CDC2'
-        },{
-            title: 'Event2',
-            start: '2019-03-07',
-            color: '#F8CDC2'
-        },{
-            title: 'Event2',
-            start: '2019-03-08',
-            color: '#F8CDC2'
-        }, {
-            title: 'Event3',
-            start: '2019-03-05',
-            color: '#EAF1FD'
-        },{
-            title: 'Event3',
-            start: '2019-03-07',
-            color: '#EAF1FD'
-        },{
-            title: 'Event3',
-            start: '2019-03-07 09:10',
-            end: '2019-03-07 10:20',
-            color: '#EAF1FD'
-        },{
-            title: 'Event3',
-            start: '2019-03-07 09:10',
-            end: '2019-03-07 10:20',
-            color: '#EAF1FD'
-        },{
-            title: 'Event3',
-            start: '2019-03-07 09:10',
-            end: '2019-03-07 10:20',
-            color: '#EAF1FD'
-        },{
-            title: 'Event3',
-            start: '2019-03-07 07:10',
-            end: '2019-03-07 10:20',
-            color: '#EAF1FD'
-        },{
-            title: 'Event3',
-            start: '2019-03-07 05:10',
-            end: '2019-03-07 10:20',
-            color: '#EAF1FD'
-        },{
-            title: 'Event3',
-            start: '2019-03-07 09:10',
-            end: '2019-03-07 10:20',
-            color: '#EAF1FD'
-        },{
-            title: 'Event3',
-            start: '2019-03-07 12:10',
-            end: '2019-03-07 14:20',
-            color: '#EAF1FD'
-        }, {
-            title: 'Event4',
-            start: '2019-03-07 14:10',
-            end: '2019-03-07 16:20',
-            color: 'red',
-            backgroundColor: '#F5DEFA',
-        }]
-    var timeType = 'month';
-    $("#calendar").fullCalendar({
-        header: {
-            left: "",
-            center: "prev, title, next",
-            right: ""
-        },
-        views: {
-            month: {
-                columnFormat: "ddd",
-            },
-            week: {
-                columnFormat: "ddd MM月DD日",
-                titleFormat: "YYYY年MM月DD日"
-            }
+        dataType: 'json',
+        params: {
+          begin: new Date(statr).toLocaleDateString().replace('/', '-').replace('/', '-'),
+          end: new Date(end).toLocaleDateString().replace('/', '-').replace('/', '-'),
+          orgIds: '1,2',
         }
-        // // events: events,
-        // color: 'yellow',   // an option!
-        // textColor: 'black',
-        // // columnHeader: false, // 列表头部
-        // // columnFormat: 'ddd MM/DD',
-        // // columnFormat: timeType == 'week' ? 'ddd' : 'ddd MM/DD', // 列表头部显示内容
-        // columnHeaderText: true,
-        // lazyFetching: false, // 是否缓存加载
-        // // allDayDefault: false,
-        // showNonCurrentDates: false, // 是否显示上个月日期
-        // events: function (start, end, timeZone, callback) {
-        //     console.log((new Date(end) - new Date(start)) / 1000 / 60 / 60 / 24);
-        //     let startEnd = (new Date(end) - new Date(start)) / 1000 / 60 / 60 / 24;
-        //     if (startEnd > 28) {
-        //         timeType = "month"
-        //     } else if (startEnd == 7) {
-        //         timeType = "week";
-        //     } else {
-        //         timeType = "day"
-        //     }
-        //     console.log(new Date(start).toLocaleDateString(), new Date(end), timeZone);
-        //     callback(events)
-        // }
-    })
+      })
+    },
+    // events: events,
+    color: 'yellow',   // an option!
+    textColor: 'black',
+    // columnHeader: false, // 列表头部
+    // columnFormat: 'ddd MM/DD',
+    // columnFormat: timeType == 'week' ? 'ddd' : 'ddd MM/DD', // 列表头部显示内容
+    columnHeaderText: true,
+    lazyFetching: false, // 是否缓存加载
+    // allDayDefault: false,
+    showNonCurrentDates: false, // 是否显示上个月日期
+    events: function (start, end, timeZone, callback) {
+        console.log((new Date(end) - new Date(start)) / 1000 / 60 / 60 / 24);
+        let startEnd = (new Date(end) - new Date(start)) / 1000 / 60 / 60 / 24;
+        if (startEnd > 28) {
+            timeType = "month"
+        } else if (startEnd == 7) {
+            timeType = "week";
+        } else {
+            timeType = "day"
+        }
+        console.log(new Date(start).toLocaleDateString(), new Date(end), timeZone);
+        callback(events)
+    }
+  })
 
-    console.log($('#calendar').fullCalendar('clientEvents'))
+  console.log($('#calendar').fullCalendar('clientEvents'))
 </script>

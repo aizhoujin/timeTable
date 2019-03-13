@@ -1,0 +1,577 @@
+{
+  "code":200,
+  "data":[
+    {
+      "assistantIds":"1",
+      "beginTime":"2019-01-10 00:30:00",
+      "classEntity":{
+        "classNo":"111",
+        "id":1,
+        "name":"vvv",
+        "tails":{
+
+        }
+      },
+      "classId":1,
+      "classSubjectId":1,
+      "classroomEntity":{
+        "id":1,
+        "name":"教室1"
+      },
+      "classroomId":1,
+      "companyEntity":{
+        "companyId":1,
+        "name":"邯郸计算机培训学院",
+        "orgId":1,
+        "orgName":"邯郸计算机培训学院",
+        "parentOrgId":0
+      },
+      "companyId":1,
+      "createStaffId":1,
+      "createTime":"2019-01-10 07:23:15",
+      "duration":45,
+      "editStaffId":1,
+      "editTime":"2019-01-10 07:23:20",
+      "endTime":"2019-01-10 01:15:00",
+      "id":1,
+      "rest":1,
+      "status":0,
+      "subjectEntity":{
+        "courseEntity":{
+          "id":1,
+          "name":"语文",
+          "tails":{
+
+          },
+          "type":"1"
+        },
+        "courseId":1,
+        "id":1,
+        "subjectId":1,
+        "tails":{
+
+        }
+      },
+      "tails":{
+
+      },
+      "teacherEntity":{
+        "accId":"1031877416689074176",
+        "companyId":1,
+        "departmentId":"1024898695888400401",
+        "id":1,
+        "infoEntity":{
+          "accId":"1031877416689074176",
+          "id":"1014084401706827776",
+          "mobile":"13800138001",
+          "nickName":"卓校长啊",
+          "realName":"卓冲"
+        },
+        "tails":{
+
+        },
+        "topCompanyId":1
+      },
+      "teacherId":1,
+      "topCompanyId":1
+    },
+    {
+      "assistantIds":"1,2_张三,李四",
+      "beginTime":"2019-01-02 00:00:00",
+      "classEntity":{
+        "classNo":"111",
+        "id":1,
+        "name":"vvv",
+        "tails":{
+
+        }
+      },
+      "classId":1,
+      "classSubjectId":1,
+      "classroomEntity":{
+        "id":1,
+        "name":"教室1"
+      },
+      "classroomId":1,
+      "companyEntity":{
+        "companyId":1,
+        "name":"邯郸计算机培训学院",
+        "orgId":1,
+        "orgName":"邯郸计算机培训学院",
+        "parentOrgId":0
+      },
+      "companyId":1,
+      "createStaffId":1,
+      "createTime":"2019-01-27 23:49:33",
+      "duration":45,
+      "endTime":"2019-01-02 00:45:00",
+      "id":"1089550998453616640",
+      "status":0,
+      "subjectEntity":{
+        "courseEntity":{
+          "id":1,
+          "name":"语文",
+          "tails":{
+
+          },
+          "type":"1"
+        },
+        "courseId":1,
+        "id":1,
+        "subjectId":1,
+        "tails":{
+
+        }
+      },
+      "tails":{
+
+      },
+      "teacherEntity":{
+        "accId":"1031877416689074176",
+        "companyId":1,
+        "departmentId":"1024898695888400401",
+        "id":1,
+        "infoEntity":{
+          "accId":"1031877416689074176",
+          "id":"1014084401706827776",
+          "mobile":"13800138001",
+          "nickName":"卓校长啊",
+          "realName":"卓冲"
+        },
+        "tails":{
+
+        },
+        "topCompanyId":1
+      },
+      "teacherId":1,
+      "topCompanyId":1
+    },
+    {
+      "assistantIds":"1,2_张三,李四",
+      "beginTime":"2019-01-07 00:00:00",
+      "classEntity":{
+        "classNo":"111",
+        "id":1,
+        "name":"vvv",
+        "tails":{
+
+        }
+      },
+      "classId":1,
+      "classSubjectId":1,
+      "classroomEntity":{
+        "id":1,
+        "name":"教室1"
+      },
+      "classroomId":1,
+      "companyEntity":{
+        "companyId":1,
+        "name":"邯郸计算机培训学院",
+        "orgId":1,
+        "orgName":"邯郸计算机培训学院",
+        "parentOrgId":0
+      },
+      "companyId":1,
+      "createStaffId":1,
+      "createTime":"2019-01-28 14:12:46",
+      "duration":45,
+      "endTime":"2019-01-07 00:45:00",
+      "id":"1089556864342949888",
+      "status":0,
+      "subjectEntity":{
+        "courseEntity":{
+          "id":1,
+          "name":"语文",
+          "tails":{
+
+          },
+          "type":"1"
+        },
+        "courseId":1,
+        "id":1,
+        "subjectId":1,
+        "tails":{
+
+        }
+      },
+      "tails":{
+
+      },
+      "teacherEntity":{
+        "accId":"1031877416689074176",
+        "companyId":1,
+        "departmentId":"1024898695888400401",
+        "id":1,
+        "infoEntity":{
+          "accId":"1031877416689074176",
+          "id":"1014084401706827776",
+          "mobile":"13800138001",
+          "nickName":"卓校长啊",
+          "realName":"卓冲"
+        },
+        "tails":{
+
+        },
+        "topCompanyId":1
+      },
+      "teacherId":1,
+      "topCompanyId":1
+    },
+    {
+      "assistantIds":"1,2_张三,李四",
+      "beginTime":"2019-01-08 00:00:00",
+      "classEntity":{
+        "classNo":"111",
+        "id":1,
+        "name":"vvv",
+        "tails":{
+
+        }
+      },
+      "classId":1,
+      "classSubjectId":1,
+      "classroomEntity":{
+        "id":1,
+        "name":"教室1"
+      },
+      "classroomId":1,
+      "companyEntity":{
+        "companyId":1,
+        "name":"邯郸计算机培训学院",
+        "orgId":1,
+        "orgName":"邯郸计算机培训学院",
+        "parentOrgId":0
+      },
+      "companyId":1,
+      "createStaffId":1,
+      "createTime":"2019-01-28 14:12:47",
+      "duration":45,
+      "endTime":"2019-01-08 00:45:00",
+      "id":"1089556865047592960",
+      "status":0,
+      "subjectEntity":{
+        "courseEntity":{
+          "id":1,
+          "name":"语文",
+          "tails":{
+
+          },
+          "type":"1"
+        },
+        "courseId":1,
+        "id":1,
+        "subjectId":1,
+        "tails":{
+
+        }
+      },
+      "tails":{
+
+      },
+      "teacherEntity":{
+        "accId":"1031877416689074176",
+        "companyId":1,
+        "departmentId":"1024898695888400401",
+        "id":1,
+        "infoEntity":{
+          "accId":"1031877416689074176",
+          "id":"1014084401706827776",
+          "mobile":"13800138001",
+          "nickName":"卓校长啊",
+          "realName":"卓冲"
+        },
+        "tails":{
+
+        },
+        "topCompanyId":1
+      },
+      "teacherId":1,
+      "topCompanyId":1
+    },
+    {
+      "assistantIds":"1,2_张三,李四",
+      "beginTime":"2019-01-11 00:00:00",
+      "classEntity":{
+        "classNo":"111",
+        "id":1,
+        "name":"vvv",
+        "tails":{
+
+        }
+      },
+      "classId":1,
+      "classSubjectId":1,
+      "classroomEntity":{
+        "id":1,
+        "name":"教室1"
+      },
+      "classroomId":1,
+      "companyEntity":{
+        "companyId":1,
+        "name":"邯郸计算机培训学院",
+        "orgId":1,
+        "orgName":"邯郸计算机培训学院",
+        "parentOrgId":0
+      },
+      "companyId":1,
+      "createStaffId":1,
+      "createTime":"2019-01-28 14:12:48",
+      "duration":45,
+      "endTime":"2019-01-11 00:45:00",
+      "id":"1089556865785790464",
+      "status":0,
+      "subjectEntity":{
+        "courseEntity":{
+          "id":1,
+          "name":"语文",
+          "tails":{
+
+          },
+          "type":"1"
+        },
+        "courseId":1,
+        "id":1,
+        "subjectId":1,
+        "tails":{
+
+        }
+      },
+      "tails":{
+
+      },
+      "teacherEntity":{
+        "accId":"1031877416689074176",
+        "companyId":1,
+        "departmentId":"1024898695888400401",
+        "id":1,
+        "infoEntity":{
+          "accId":"1031877416689074176",
+          "id":"1014084401706827776",
+          "mobile":"13800138001",
+          "nickName":"卓校长啊",
+          "realName":"卓冲"
+        },
+        "tails":{
+
+        },
+        "topCompanyId":1
+      },
+      "teacherId":1,
+      "topCompanyId":1
+    },
+    {
+      "assistantIds":"1,2_张三,李四",
+      "beginTime":"2019-01-14 00:00:00",
+      "classEntity":{
+        "classNo":"111",
+        "id":1,
+        "name":"vvv",
+        "tails":{
+
+        }
+      },
+      "classId":1,
+      "classSubjectId":1,
+      "classroomEntity":{
+        "id":1,
+        "name":"教室1"
+      },
+      "classroomId":1,
+      "companyEntity":{
+        "companyId":1,
+        "name":"邯郸计算机培训学院",
+        "orgId":1,
+        "orgName":"邯郸计算机培训学院",
+        "parentOrgId":0
+      },
+      "companyId":1,
+      "createStaffId":1,
+      "createTime":"2019-01-28 14:12:49",
+      "duration":45,
+      "endTime":"2019-01-14 00:45:00",
+      "id":"1089556866557542400",
+      "status":0,
+      "subjectEntity":{
+        "courseEntity":{
+          "id":1,
+          "name":"语文",
+          "tails":{
+
+          },
+          "type":"1"
+        },
+        "courseId":1,
+        "id":1,
+        "subjectId":1,
+        "tails":{
+
+        }
+      },
+      "tails":{
+
+      },
+      "teacherEntity":{
+        "accId":"1031877416689074176",
+        "companyId":1,
+        "departmentId":"1024898695888400401",
+        "id":1,
+        "infoEntity":{
+          "accId":"1031877416689074176",
+          "id":"1014084401706827776",
+          "mobile":"13800138001",
+          "nickName":"卓校长啊",
+          "realName":"卓冲"
+        },
+        "tails":{
+
+        },
+        "topCompanyId":1
+      },
+      "teacherId":1,
+      "topCompanyId":1
+    },
+    {
+      "assistantIds":"1,2_张三,李四",
+      "beginTime":"2019-01-15 00:00:00",
+      "classEntity":{
+        "classNo":"111",
+        "id":1,
+        "name":"vvv",
+        "tails":{
+
+        }
+      },
+      "classId":1,
+      "classSubjectId":1,
+      "classroomEntity":{
+        "id":1,
+        "name":"教室1"
+      },
+      "classroomId":1,
+      "companyEntity":{
+        "companyId":1,
+        "name":"邯郸计算机培训学院",
+        "orgId":1,
+        "orgName":"邯郸计算机培训学院",
+        "parentOrgId":0
+      },
+      "companyId":1,
+      "createStaffId":1,
+      "createTime":"2019-01-28 14:12:49",
+      "duration":45,
+      "endTime":"2019-01-15 00:45:00",
+      "id":"1089556867371237376",
+      "status":0,
+      "subjectEntity":{
+        "courseEntity":{
+          "id":1,
+          "name":"语文",
+          "tails":{
+
+          },
+          "type":"1"
+        },
+        "courseId":1,
+        "id":1,
+        "subjectId":1,
+        "tails":{
+
+        }
+      },
+      "tails":{
+
+      },
+      "teacherEntity":{
+        "accId":"1031877416689074176",
+        "companyId":1,
+        "departmentId":"1024898695888400401",
+        "id":1,
+        "infoEntity":{
+          "accId":"1031877416689074176",
+          "id":"1014084401706827776",
+          "mobile":"13800138001",
+          "nickName":"卓校长啊",
+          "realName":"卓冲"
+        },
+        "tails":{
+
+        },
+        "topCompanyId":1
+      },
+      "teacherId":1,
+      "topCompanyId":1
+    },
+    {
+      "assistantIds":"1,2_张三,李四",
+      "beginTime":"2019-01-04 00:00:00",
+      "classEntity":{
+        "classNo":"111",
+        "id":1,
+        "name":"vvv",
+        "tails":{
+
+        }
+      },
+      "classId":1,
+      "classSubjectId":1,
+      "classroomEntity":{
+        "id":1,
+        "name":"教室1"
+      },
+      "classroomId":1,
+      "companyEntity":{
+        "companyId":1,
+        "name":"邯郸计算机培训学院",
+        "orgId":1,
+        "orgName":"邯郸计算机培训学院",
+        "parentOrgId":0
+      },
+      "companyId":1,
+      "createStaffId":1,
+      "createTime":"2019-01-28 14:13:44",
+      "duration":45,
+      "endTime":"2019-01-04 00:45:00",
+      "id":"1089558821610717184",
+      "status":0,
+      "subjectEntity":{
+        "courseEntity":{
+          "id":1,
+          "name":"语文",
+          "tails":{
+
+          },
+          "type":"1"
+        },
+        "courseId":1,
+        "id":1,
+        "subjectId":1,
+        "tails":{
+
+        }
+      },
+      "tails":{
+
+      },
+      "teacherEntity":{
+        "accId":"1031877416689074176",
+        "companyId":1,
+        "departmentId":"1024898695888400401",
+        "id":1,
+        "infoEntity":{
+          "accId":"1031877416689074176",
+          "id":"1014084401706827776",
+          "mobile":"13800138001",
+          "nickName":"卓校长啊",
+          "realName":"卓冲"
+        },
+        "tails":{
+
+        },
+        "topCompanyId":1
+      },
+      "teacherId":1,
+      "topCompanyId":1
+    }
+  ],
+  "msg":"请求成功"
+}
