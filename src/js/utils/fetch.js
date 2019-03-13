@@ -5,8 +5,8 @@ layui.define(['jquery', 'utils', 'axios'], function (exports) {
         const axios = layui.axios;
         const storage = utils.localStorage;
 
-        // const baseURL = 'http://api.xiaoxunbang.com';
-        const baseURL = 'http://tea.ngrok.eanfang.net:89';
+        const baseURL = 'http://api.xiaoxunbang.com';
+        // const baseURL = 'http://tea.ngrok.eanfang.net:89';
         //  const baseURL = 'http://39.98.196.28:8080';
 
         const from = "BIZ";
