@@ -1,8 +1,6 @@
-/*!
- * FullCalendar v3.10.0
- * Docs & License: https://fullcalendar.io/
- * (c) 2018 Adam Shaw
- */
+a{
+    text-decoration: none;
+}
 .fc {
     direction: ltr;
     text-align: left;
@@ -591,10 +589,16 @@ be a descendant of the grid when it is being dragged.
     padding: 0 1px;
     border-radius: 0px !important;
     border-bottom: 1px solid #F3F3F3;
+    height: 20px;
+    line-height: 20px;
+    color: #3E464B;
+    padding: 0px 5px;
+    font-size: 12px;
+
 }
 
 tr:first-child > td > .fc-day-grid-event {
-    margin-top: 2px;
+    margin-top: 1px;
     /* a little bit more space before the first event */
 }
 
@@ -620,7 +624,7 @@ tr:first-child > td > .fc-day-grid-event {
 }
 
 .fc-day-grid-event .fc-time {
-    font-weight: bold;
+    /*font-weight: bold;*/
 }
 
 /* resizer (cursor devices) */
@@ -649,7 +653,7 @@ a.fc-more {
 }
 
 a.fc-more:hover {
-    text-decoration: underline;
+    /*text-decoration: underline;*/
 }
 
 .fc-limited {
@@ -1061,6 +1065,7 @@ NOTE: use percentage font sizes or else old IE chokes
 /* week and day number styling */
 .fc-day-top.fc-other-month {
     opacity: 0.3;
+    font-weight: normal;
 }
 
 .fc-basic-view .fc-week-number,
@@ -1075,7 +1080,7 @@ NOTE: use percentage font sizes or else old IE chokes
 }
 
 .fc-ltr .fc-basic-view .fc-day-top .fc-day-number {
-    float: right;
+    /*float: right;*/
 }
 
 .fc-rtl .fc-basic-view .fc-day-top .fc-day-number {
@@ -1556,9 +1561,13 @@ be a descendant of the grid when it is being dragged.
     background: #F3F3F3;
     border-bottom: none;
 }
+.timeTab .layui-this:after{
+    border-bottom: none !important;
+}
 
 .fc-day-top{
     height: 20px;
+    font-weight: bold;
     text-align: center !important;
     background: #F3F3F3 !important;
     box-sizing: border-box;
@@ -1572,11 +1581,14 @@ be a descendant of the grid when it is being dragged.
     width: 100%;
     display: flex;
     justify-content: flex-end;
+    height: 40px;
 }
 .legend li{
     display: flex;
     font-size: 12px;
     text-align: right;
+    align-items: center;
+    margin: 0px 5px;
 }
 .legend li span{
     white-space: nowrap;
@@ -1585,4 +1597,7 @@ be a descendant of the grid when it is being dragged.
     width: 40px;
     margin-left: 5px;
     height: 15px;
+}
+.chong{
+    color: red !important;
 }
