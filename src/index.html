@@ -5,7 +5,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>学生管理系统主页</title>
-    <link rel="stylesheet" href="./lib/timeTable/static/fullcalendar.css">
+    <link rel="stylesheet" href="./lib/timeTable/fullcalendar.css">
+    <link rel="stylesheet" href="./lib/timeTable/icon.css">
   <style>
     .event{
       color: #00FF00 !important;
@@ -21,7 +22,7 @@
 <script src="./lib/timeTable/static/jquery.min.js"></script>
 <script src="./lib/timeTable/static/moment.min.js"></script>
 <!--<script src="./lib/timeTable/static/fullcalendar.min.js"></script>-->
-<script src="./lib/timeTable/static/fullcalendar.js"></script>
+<script src="lib/timeTable/fullcalendar.js"></script>
 <script src="./lib/timeTable/static/zh-cn.js"></script>
 
 <body class="layui-layout-body kit-theme-default">
@@ -53,10 +54,10 @@
              <div >
             	<form class="layui-form layui-form-pane " lay-filter="form_myInfo" action="">
                     <div class="layui-input-block icon Zj_Qh_seach" id="companySelect" style="z-index: 99;">
-                    	
+
                     </div>
                     <div class="Qh_button" style="z-index: 0;">切换校区</div>
-                    
+
                 </form>
             </div>
         </div>
@@ -79,7 +80,7 @@
         </div>
     </div>
     <!-- silds -->
-    
+
      <div class="layui-side" kit-side="true" >
         <div class="layui-side-scroll Qh_bgcolor "  >
         	<div class="Qh_myinfos">
@@ -87,7 +88,7 @@
         			 <li class="kit-item Qh_li wid">
 	                    <a href="javascript:;" >
 			              <div id="sp_userInfo" class="sp_userInfo">
-			                <img id="img_head" class="layui-nav-img">		               
+			                <img id="img_head" class="layui-nav-img">
 			              </div>
 			               <div id="sp_username" class="sp_username"></div>
 	                    </a>
@@ -117,8 +118,8 @@
                  </li>
         		</ul>
         	</div>
-        	
-            <div id="menu-box" class="Qh_pubbj" >          	
+
+            <div id="menu-box" class="Qh_pubbj" >
                 <ul class="kit-menu">
                 </ul>
 
@@ -257,7 +258,7 @@
     })
     ;
 </script>
-<script src="./lib/timeTable/timeTable.js"></script>
+<script src="./lib/timeTable/static/tableExcel.js"></script>
 <!-- endbuild -->
 </body>
 <style type="text/css">
