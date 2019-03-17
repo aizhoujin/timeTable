@@ -17,7 +17,9 @@ const extendArr = {
     authTree: 'extend/authTree/authTree',//穿梭框
     selectN: 'extend/select/selectN',//无限级联单选
     selectM: 'extend/select/selectM',//多选
-    tableSelect: 'extend/tableSelect/tableSelect'//下拉表格
+    tableSelect: 'extend/tableSelect/tableSelect',//下拉表格
+
+    timeTable: 'api/timeTable' // 排课表模块
 
 };
 //oss的配置路径

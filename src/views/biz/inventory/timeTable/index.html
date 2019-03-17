@@ -60,8 +60,8 @@
                 <div class="color" style="background: #E9EAEB"></div>
               </li>
               <li onclick="exportExcel()">
-                <i class="iconfont icon-xiazai"></i>
-                <div>导出数据</div>
+                <i class="iconfont icon-xiazai" style="font-size: 18px;font-weight: bold;"></i>
+                <div style="white-space: nowrap">导出数据</div>
               </li>
             </ul>
           </div>
@@ -74,6 +74,7 @@
 </div>
 <script>
   const TimeTabelBase = 'http://api.xiaoxunbang.com';
+  // const TimeTabelBase = 'http://tea.ngrok.eanfang.net:89';
   layui.use(['form', 'jquery'], function () {
     var form = layui.form; //只有执行了这一步，部分表单元素才会自动修饰成功
     form.render();
@@ -109,6 +110,11 @@
   }
 
   var showTimeTabDetail = null; // 鼠标悬浮显示详情
+  var timeScope = JSON.parse(window.localStorage.getItem('classify'));
+  var timeStart = timeScope.lessonTimeScope[0].cValue;
+  var timeEnd = timeScope.lessonTimeScope[1].cValue;
+
+  console.log(timeStart, timeEnd)
 
   // 切换视图(月，日，周)
 
@@ -171,8 +177,8 @@
     slotLabelFormat: 'HH:mm', // 统一时间显示格式
     allDaySlot: false, // 全天事件
     scrollTime: '09:00', // 默认滚动到时间位置
-    minTime: '09:00', // 周和天显示的最小时间
-    maxTime: '18:00', // 最大时间
+    minTime: timeStart ? (timeStart + ':00') : "00:00", // 周和天显示的最小时间
+    maxTime: timeEnd ? (timeEnd + ':00') : "24:00", // 最大时间
     timeFormat: "HH:mm", // 显示时间格式
     columnHeaderText: true,
     lazyFetching: false, // 是否缓存加载
@@ -254,7 +260,45 @@
     eventMouseout(event, jsEvent) {
       $('.timeTabDetail').remove();
       clearTimeout(showTimeTabDetail)
+    },
+
+
+    // 天点击事件
+    dayClick(date, jsEvent, view) {
+      let viewType = $("#calendar").fullCalendar('getView').name;
+      let courseDate = date.format("YYYY-MM-DD HH:mm");
+      let courseTime = date.format("HH:mm");
+      let course = {
+        viewType: viewType,
+        courseDate: courseDate,
+        courseTime: courseTime
+      }
+      course = JSON.stringify(course)
+      window.localStorage.setItem('course', course);
+      layer.open({
+        type: 2,
+        area: ['680px', '580px'],
+        content: ['views/biz/inventory/timeTable/components/dialog.html', 'no'],
+        end: () => {
+          queryGoods();
+        }
+      });
     }
   })
 
+  function queryGoods() {
+    console.log('关闭')
+  }
+
+  $(document).ready(() => {
+    layer.open({
+      type: 2,
+      area: ['780px', '680px'],
+      title: false,
+      content: ['views/biz/inventory/timeTable/components/dialog.html', 'no'],
+      end: () => {
+        queryGoods();
+      }
+    });
+  })
 </script>
