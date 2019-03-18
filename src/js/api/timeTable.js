@@ -41,6 +41,19 @@ layui.define(['jquery', 'utils', 'fetch', 'tools'], function (exports) {
               })
           );
         },
+
+        // 生成排课记录
+          createByPlan: (data) => {
+          return tools.baseApi(
+              fetch({
+                method: 'post',
+                url: "/biz/api/coursePlan/v1/createByPlan",
+                data: data,
+              })
+          );
+        },
+
+
       };
 
       //输出menu接口

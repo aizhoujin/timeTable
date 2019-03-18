@@ -1,352 +1,426 @@
 <script src="/lib/layui/layui.js"></script>
 <script src="/js/config/config.js"></script>
 <script src="../../../../../lib/timeTable/static/jquery.min.js"></script>
+<script src="../../../../../lib/timeTable/static/moment.min.js"></script>
 <style>
-  .selectLabel {
-    text-align: right;
-  }
+    .selectLabel {
+        text-align: right;
+    }
 
-  .hint {
-    text-indent: 1em;
-    width: 400px;
-    color: #3278F0;
-  }
+    .hint {
+        text-indent: 1em;
+        width: 400px;
+        color: #3278F0;
+    }
 </style>
 
 
 <div class="layui-fluid">
-  <div class="layui-row">
-    <div class="layui-col-xs12">
-      <form class="layui-form" action="">
-        <div class="layui-layer-title">
-          排课班级基础信息
-        </div>
-        <div class="layui-form-item">
-          <div class="layui-row">
-            <div class="layui-col-xs5">
-              <label class="layui-form-label selectLabel">班级:</label>
-              <div class="layui-input-block">
-                <select name="classGrade" id="classGrade">
-                  <option value="">请选择班级</option>
-                </select>
-              </div>
-            </div>
-            <div class="layui-col-xs5">
-              <label class="layui-form-label selectLabel">科目:</label>
-              <div class="layui-input-block">
-                <select name="subject" id="subject">
-                  <option value="">请选择科目</option>
-                </select>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="layui-form-item">
-          <div class="layui-row">
-            <div class="layui-col-xs5">
-              <label class="layui-form-label selectLabel">教师:</label>
-              <div class="layui-input-block">
-                <select name="teacher" id="teacher">
-                  <option value="">请选择教师</option>
-                </select>
-              </div>
-            </div>
-            <div class="layui-col-xs5">
-              <label class="layui-form-label selectLabel">助教:</label>
-              <div class="layui-input-block">
-                <select name="teaching" id="teaching">
-                  <option value="">请选择助教</option>
-                </select>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="layui-form-item">
-          <div class="layui-row">
-            <div class="layui-col-xs5">
-              <label class="layui-form-label selectLabel">教室:</label>
-              <div class="layui-input-block">
-                <select name="classRoom" id="classRoom" lay-filter="aihao">
-                  <option value="">请选择教室</option>
-                </select>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="layui-form-item"></div>
-        <div class="layui-layer-title">
-          排课重复设置
-        </div>
-        <div class="layui-form-item" style="height: 38px">
-          <label class="layui-form-label">排课方式</label>
-          <div class="layui-input-inline">
-            <input type="checkbox" class="way" name="way[one]" lay-filter="way" lay-skin="primary" title="单次" checked>
-            <input type="checkbox" class="way" name="way[more]" lay-filter="way" lay-skin="primary" title="重复">
-          </div>
-          <div class="layui-input-inline" style="white-space: nowrap">
-            <label class="layui-form-label" style="width: 120px">是否跳过节假日</label>
-            <input type="checkbox" name="skip" lay-skin="switch" lay-filter="skip">
-          </div>
-        </div>
-        <div class="layui-form-item repetitionWay" hidden>
-          <label class="layui-form-label">重复方式:</label>
-          <div class="layui-input-block">
-            <select name="repetitive" id="repetitive" class="layui-form-select" lay-filter="repetitiveWay">
-              <option value="">请选择重复方式</option>
-              <option value="everyOtherDay">隔天重复</option>
-              <option value="week">周重复</option>
-            </select>
-          </div>
-          <div class="hint" hidden>按照排课开始日期当天开始排课，每隔一天进行重复排课</div>
-        </div>
-        <div class="layui-form-item repetitionSetting" style="height: 38px" hidden>
-          <label class="layui-form-label">重复设置:</label>
-          <div class="layui-input-block">
-            <input type="checkbox" class="day" name="day[all]" lay-skin="primary" title="全选" lay-filter="day">
-            <input type="checkbox" class="day" name="day[1]" lay-skin="primary" title="周一" lay-filter="day">
-            <input type="checkbox" class="day" name="day[2]" lay-skin="primary" title="周二" lay-filter="day">
-            <input type="checkbox" class="day" name="day[3]" lay-skin="primary" title="周三" lay-filter="day">
-            <input type="checkbox" class="day" name="day[4]" lay-skin="primary" title="周四" lay-filter="day">
-            <input type="checkbox" class="day" name="day[5]" lay-skin="primary" title="周五" lay-filter="day">
-            <input type="checkbox" class="day" name="day[6]" lay-skin="primary" title="周六" lay-filter="day">
-            <input type="checkbox" class="day" name="day[7]" lay-skin="primary" title="周日" lay-filter="day">
-          </div>
-        </div>
-        <div class="layui-layer-title">
-          课程时间设置
-        </div>
-        <div class="layui-form-item">
-          <label class="layui-form-label">排课日期:</label>
-          <div class="layui-input-inline" style="width: 300px">
-            <input type="text" class="layui-input" id="date">
-          </div>
-          <div class="layui-input-inline"
-               style="display: flex; white-space: nowrap; margin-left: 30px; line-height: 38px">
-            最多排 &nbsp; <input type="text" class="layui-input"> &nbsp; 次
-          </div>
-        </div>
-        <div class="layui-form-item">
-          <label class="layui-form-label">开始时间:</label>
-          <div class="layui-input-inline">
-            <input type="text" class="layui-input" id="timeStrat">
-          </div>
-          <label class="layui-form-label selectLabel">结束时间:</label>
-          <div class="layui-input-inline">
-            <input type="text" class="layui-input" id="timeEnd" disabled="disabled">
-          </div>
-        </div>
-        <div class="layui-form-item">
-          <label class="layui-form-label">单节时长:</label>
-          <div class="layui-input-block">
-            <select name="classGrade" id="duration" lay-filter="timeSize">
-              <option value="">请选择时长</option>
-              <option value="45">45分钟</option>
-              <option value="60">60分钟</option>
-              <option value="75">75分钟</option>
-            </select>
-          </div>
-        </div>
-        <div class="layui-form-item">
-          <label class="layui-form-label" style="width: 120px">检查排课冲突:</label>
-          <div class="layui-input-block">
-            <input type="checkbox" name="clash" lay-skin="switch" checked>
-          </div>
-        </div>
+    <div class="layui-row">
+        <div class="layui-col-xs12">
+            <form class="layui-form" action="">
+                <div class="layui-layer-title">
+                    排课班级基础信息
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-row">
+                        <div class="layui-col-xs5">
+                            <label class="layui-form-label selectLabel">班级:</label>
+                            <div class="layui-input-block">
+                                <select name="classGrade" id="classGrade">
+                                    <option value="">请选择班级</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-col-xs5">
+                            <label class="layui-form-label selectLabel">科目:</label>
+                            <div class="layui-input-block">
+                                <select name="subject" id="subject">
+                                    <option value="">请选择科目</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-row">
+                        <div class="layui-col-xs5">
+                            <label class="layui-form-label selectLabel">教师:</label>
+                            <div class="layui-input-block">
+                                <select name="teacher" id="teacher" lay-filter="teacher">
+                                    <option value="">请选择教师</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-col-xs5">
+                            <label class="layui-form-label selectLabel">助教:</label>
+                            <div class="layui-input-block">
+                                <select name="teaching" id="teaching">
+                                    <option value="">请选择助教</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-row">
+                        <div class="layui-col-xs5">
+                            <label class="layui-form-label selectLabel">教室:</label>
+                            <div class="layui-input-block">
+                                <select name="classRoom" id="classRoom" lay-filter="aihao">
+                                    <option value="">请选择教室</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item"></div>
+                <div class="layui-layer-title">
+                    排课重复设置
+                </div>
+                <div class="layui-form-item" style="height: 38px">
+                    <label class="layui-form-label">排课方式</label>
+                    <div class="layui-input-inline">
+                        <input type="checkbox" class="way" name="way[one]" lay-filter="way" lay-skin="primary"
+                               title="单次" checked>
+                        <input type="checkbox" class="way" name="way[more]" lay-filter="way" lay-skin="primary"
+                               title="重复">
+                    </div>
+                    <div class="layui-input-inline" style="white-space: nowrap">
+                        <label class="layui-form-label" style="width: 120px">是否跳过节假日</label>
+                        <input type="checkbox" name="skip" lay-skin="switch" lay-filter="skip">
+                    </div>
+                </div>
+                <div class="layui-form-item repetitionWay" hidden>
+                    <label class="layui-form-label">重复方式:</label>
+                    <div class="layui-input-block">
+                        <select name="repetitive" id="repetitive" class="layui-form-select" lay-filter="repetitiveWay">
+                            <option value="">请选择重复方式</option>
+                            <option value="everyOtherDay">隔天重复</option>
+                            <option value="week">周重复</option>
+                        </select>
+                    </div>
+                    <div class="hint" hidden>按照排课开始日期当天开始排课，每隔一天进行重复排课</div>
+                </div>
+                <div class="layui-form-item repetitionSetting" style="height: 38px" hidden>
+                    <label class="layui-form-label">重复设置:</label>
+                    <div class="layui-input-block">
+                        <input type="checkbox" class="day" name="day[all]" lay-skin="primary" title="全选"
+                               lay-filter="day">
+                        <input type="checkbox" class="day" name="day[1]" lay-skin="primary" title="周一" lay-filter="day">
+                        <input type="checkbox" class="day" name="day[2]" lay-skin="primary" title="周二" lay-filter="day">
+                        <input type="checkbox" class="day" name="day[3]" lay-skin="primary" title="周三" lay-filter="day">
+                        <input type="checkbox" class="day" name="day[4]" lay-skin="primary" title="周四" lay-filter="day">
+                        <input type="checkbox" class="day" name="day[5]" lay-skin="primary" title="周五" lay-filter="day">
+                        <input type="checkbox" class="day" name="day[6]" lay-skin="primary" title="周六" lay-filter="day">
+                        <input type="checkbox" class="day" name="day[7]" lay-skin="primary" title="周日" lay-filter="day">
+                    </div>
+                </div>
+                <div class="layui-layer-title">
+                    课程时间设置
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">排课日期:</label>
+                    <div class="layui-input-inline" style="width: 300px">
+                        <input type="text" class="layui-input" id="date" autocomplete="off">
+                    </div>
+                    <div hidden class="planCount">
+                        <div class="layui-input-inline planCount"
+                             style="display: flex; white-space: nowrap; margin-left: 30px; line-height: 38px" hidden>
+                            最多排 &nbsp; <input type="text" id="count" autocomplete="off" class="layui-input" value=""
+                                              lay-filter="count"
+                                              onchange="count"> &nbsp; 次
+                        </div>
+                    </div>
 
-        <div class="layui-form-item" style="text-align: center">
-          <button class="layui-btn layui-btn-primary">取消</button>
-          <button class="layui-btn layui-btn-normal">生成排课记录</button>
-        </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">开始时间:</label>
+                    <div class="layui-input-inline">
+                        <input type="text" class="layui-input" id="timeStrat" autocomplete="off">
+                    </div>
+                    <label class="layui-form-label selectLabel">结束时间:</label>
+                    <div class="layui-input-inline">
+                        <input type="text" class="layui-input" id="timeEnd" disabled="disabled" style="cursor: no-drop"
+                               autocomplete="off">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">单节时长:</label>
+                    <div class="layui-input-block">
+                        <select name="classGrade" id="duration" lay-filter="timeSize">
+                            <option value="">请选择时长</option>
+                            <option value="45">45分钟</option>
+                            <option value="60">60分钟</option>
+                            <option value="75">75分钟</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label" style="width: 120px">检查排课冲突:</label>
+                    <div class="layui-input-block">
+                        <input type="checkbox" name="clash" lay-skin="switch" lay-filter="clash">
+                    </div>
+                </div>
 
-      </form>
+                <div class="layui-form-item" style="text-align: center">
+                    <button class="layui-btn layui-btn-primary">取消</button>
+                    <button class="layui-btn layui-btn-normal" lay-submit lay-filter="generate">生成排课记录</button>
+                </div>
+
+            </form>
+        </div>
     </div>
-  </div>
 </div>
 
 <script>
-  layui.use(['form', 'laydate', 'jquery', 'timeTable', 'staffApi'], function () {
-    const timeTable = layui.timeTable;
-    const staffApi = layui.staffApi;
-    const laydate = layui.laydate;
-    var form = layui.form; //只有执行了这一步，部分表单元素才会自动修饰成功
+    layui.use(['form', 'laydate', 'jquery', 'timeTable', 'staffApi'], function () {
+        const timeTable = layui.timeTable;
+        const staffApi = layui.staffApi;
+        const laydate = layui.laydate;
+        var form = layui.form; //只有执行了这一步，部分表单元素才会自动修饰成功
+        var bgTime = null;
 
-    const params = {
-      assistantIds: '',
-      beginTime: '',
-      clash: '',
-      classId: '',
-      classSubjectId: '',
-      classroomId: '',
-      duration: '',
-      endTime: '',
-      holidays: '0',
-      planBegin: '',
-      planCount: '',
-      planEnd: '',
-      planType: '0',
-      repeat: '',
-      teacherId: '',
-      week: '',
-    }
+        let course = JSON.parse(window.localStorage.getItem("course"));
+        let couresTime = course ? course.courseTime : '00:00';
 
-    //日期范围选择
-    let course = JSON.parse(window.localStorage.getItem("course"))
-    laydate.render({
-      elem: '#date',
-      range: true, //或 range: '~' 来自定义分割字符
-      btns: ['confirm', 'clear'],
-      // showBottom: false
-    });
-    laydate.render(({
-      elem: "#timeStrat",
-      type: 'time',
-      value: course ? course.courseTime : ("00:00")
-    }))
-    laydate.render(({
-      elem: "#timeEnd",
-      type: 'time'
-    }))
+        var params = {
+            assistantIds: '',
+            beginTime: couresTime,
+            clash: '0',
+            classId: '',
+            classSubjectId: '',
+            classroomId: '',
+            duration: '',
+            endTime: '',
+            holidays: '0',
+            planBegin: '',
+            planCount: '5',
+            planEnd: '',
+            planType: '0',
+            repeat: '',
+            teacherId: '',
+            week: '',
+        }
 
-    // 接口参数
-    let obj = {
-      "equals": {},
-      "page": 1,
-      "size": 10,
-    }
+        //日期范围选择
 
-    // 选择班级之后联动科目选择框
-    timeTable.selector(obj).then(res => {
-      let data = res.data.list;
-      let optionLi = '<option value="">请选择班级</option>';
-      for (let i = 0; i < data.length; i++) {
-        optionLi += ("<option value=" + data[i].id + ">" + data[i].name + "</option>")
-      }
-      $("#classGrade").html(optionLi)
-      form.render();
-    })
-
-    // 选择教室数据
-    timeTable.classRoom(obj).then(res => {
-      let data = res.data.list;
-      let optionLi = '<option value="">请选择教室</option>';
-      for (let i = 0; i < data.length; i++) {
-        optionLi += ("<option value=" + data[i].id + ">" + data[i].name + "</option>")
-      }
-      $("#classRoom").html(optionLi)
-      form.render();
-    })
-
-    // 教师和助教数据
-    staffApi.selector(obj).then(res => {
-      let data = res.data.list;
-      let optionLi = '<option value="">请选择教师</option>';
-      let teachingLi = '<option value="">请选择助教</option>'
-      for (let i = 0; i < data.length; i++) {
-        optionLi += ("<option value=" + data[i].infoEntity.id + ">" + data[i].infoEntity.realName + "</option>")
-        teachingLi += ("<option value=" + data[i].infoEntity.id + ">" + data[i].infoEntity.realName + "</option>")
-      }
-      $("#teacher").html(optionLi);
-      $("#teaching").html(teachingLi);
-      form.render();
-    })
-
-
-    // 监听select
-    form.on('select', (data) => {
-      if (data.elem.id == "classGrade") {
-        if ($("#classGrade").val()) {
-          timeTable.subjectSelectorByClass($("#classGrade").val()).then(res => {
-            let subjectList = res.data.list;
-            let subjectOption = '<option value="">请选择科目</option>'
-            for (let k = 0; k < subjectList.length; k++) {
-              subjectOption += ("<option value=" + subjectList[k].courseEntity.id + ">" + subjectList[k].courseEntity.name + "</option>")
+        laydate.render({
+            elem: '#date',
+            range: true, //或 range: '~' 来自定义分割字符
+            btns: ['confirm', 'clear'],
+            done: function (value, date, endate) {
+                console.log(value, date, endate);
+                let bg = value.substring(0, 10);
+                let ed = value.substring(13, 23);
+                params.planBegin = bg;
+                params.planEnd = ed;
             }
-            console.log(subjectOption)
-            $("#subject").html(subjectOption);
+            // showBottom: false
+        });
+        laydate.render(({
+            elem: "#timeStrat",
+            type: 'time',
+            value: couresTime,
+            format: 'HH:mm',
+            btns: ['confirm', 'clear'],
+            done: function (value, date, endDate) {
+                // bgTime = moment([date.year, date.month, date.date, date.hours, date.minutes]);
+                // bgTime = moment(new Date());
+                bgTime = date.year + '-' + date.month + '-' + date.date + ' ' + date.hours + ':' + date.minutes;
+                params.beginTime = new Date(bgTime).format("yyyy-MM-dd hh:mm");
+                if (params.duration) {
+                    // params.endTime = bgTime.add(Number(params.duration), 'm').format('YYYY-MM-DD HH:mm');
+                    // console.log(params.endTime)
+                    params.endTime = moment(new Date(bgTime)).add(Number(params.duration), 'm').format("yyyy-MM-dd hh:mm");
+                    let edtime = new Date(params.endTime).format("hh:mm");
+                    console.log(edtime);
+                    $("#timeEnd").val('123123')
+                }
+            }
+        }))
+
+        // 接口参数
+        let obj = {
+            "equals": {},
+            "page": 1,
+            "size": 10,
+        }
+
+        // 选择班级之后联动科目选择框请求
+        timeTable.selector(obj).then(res => {
+            let data = res.data.list;
+            let optionLi = '<option value="">请选择班级</option>';
+            for (let i = 0; i < data.length; i++) {
+                optionLi += ("<option value=" + data[i].id + ">" + data[i].name + "</option>")
+            }
+            $("#classGrade").html(optionLi)
             form.render();
-          })
-        }
-      } else if (data.elem.id == "subject") {
-        console.log($("#subject").val())
-      }
-    })
-
-
-    // 单次 重复选择
-    form.on('checkbox(way)', function (data) {
-      console.log(data);
-      $(".way").each(function () {
-        this.checked = false;
-      })
-      data.elem.checked = true;
-      if (data.elem.name == "way[one]") {
-        $(".repetitionWay").hide();
-        params.planType = '0';
-      } else {
-        $(".repetitionWay").show();
-        params.planType = '1';
-      }
-      form.render();
-    })
-
-    // 是否跳过节假日
-    form.on('switch(skip)', function (data) {
-      console.log(data.elem.checked);
-      if (data.elem.checked) {
-        params.holidays = '1'
-      } else {
-        params.holidays = '0'
-      }
-      form.render();
-    })
-
-    // 重复方式
-    form.on("select(repetitiveWay)", function (data) {
-      console.log(data);
-      if (data.elem.value == "everyOtherDay") {
-        $(".hint").show();
-        $(".repetitionSetting").hide();
-      } else if (data.elem.value == "week") {
-        $(".repetitionSetting").show();
-        $(".hint").hide();
-      } else {
-        $(".repetitionSetting").hide();
-        $(".hint").hide();
-      }
-    })
-
-    // 重复设置
-    form.on("checkbox(day)", function (data) {
-      if (data.elem.title == '全选') {
-        $(".day").each(function () {
-          this.checked = data.elem.checked;
         })
-      } else {
-        if (!data.elem.checked) {
-          $(".day")[0].checked = false;
-        } else {
-          if ($(".day")[1].checked && $(".day")[2].checked && $(".day")[3].checked && $(".day")[4].checked && $(".day")[5].checked && $(".day")[6].checked && $(".day")[6].checked) {
-            $(".day")[0].checked = true;
-          }
-        }
-      }
-      let week = '';
-      $('.day').each(function (index, item) {
-        if (item.checked && index != 0) {
-          week += index + ','
-        }
-      })
-      params.week = week.substring(0, week.length - 1)
-      console.log(params.week)
-      form.render();
+
+        // 选择教室数据
+        timeTable.classRoom(obj).then(res => {
+            let data = res.data.list;
+            let optionLi = '<option value="">请选择教室</option>';
+            for (let i = 0; i < data.length; i++) {
+                optionLi += ("<option value=" + data[i].id + ">" + data[i].name + "</option>")
+            }
+            $("#classRoom").html(optionLi)
+            form.render();
+        })
+
+        // 教师和助教数据
+        staffApi.selector(obj).then(res => {
+            let data = res.data.list;
+            let optionLi = '<option value="">请选择教师</option>';
+            let teachingLi = '<option value="">请选择助教</option>'
+            for (let i = 0; i < data.length; i++) {
+                optionLi += ("<option value=" + data[i].id + ">" + data[i].infoEntity.realName + "</option>")
+                teachingLi += ("<option value=" + data[i].id + ">" + data[i].infoEntity.realName + "</option>")
+            }
+            $("#teacher").html(optionLi);
+            $("#teaching").html(teachingLi);
+            form.render();
+        })
+
+
+        // 监听select
+        form.on('select', (data) => {
+            if (data.elem.id == "classGrade") {
+                if ($("#classGrade").val()) {
+                    console.log($("#classGrade").val())
+                    params.classId = $("#classGrade").val();
+                    timeTable.subjectSelectorByClass($("#classGrade").val()).then(res => {
+                        let subjectList = res.data.list;
+                        let subjectOption = '<option value="">请选择科目</option>'
+                        for (let k = 0; k < subjectList.length; k++) {
+                            subjectOption += ("<option value=" + subjectList[k].courseEntity.id + ">" + subjectList[k].courseEntity.name + "</option>")
+                        }
+                        console.log(subjectOption)
+                        $("#subject").html(subjectOption);
+                        form.render();
+                    })
+                }
+            } else if (data.elem.id == "subject") {
+                console.log($("#subject").val());
+                params.classSubjectId = $("#subject").val();
+            } else if (data.elem.id == 'teacher') {
+                params.teacherId = $("#teacher").val();
+            } else if (data.elem.id == 'teaching') {
+                params.assistantIds = $('#teaching').val();
+            } else if (data.elem.id == 'classRoom') {
+                params.classroomId = $("#classRoom").val();
+            }
+        })
+
+
+        // 单次 重复选择
+        form.on('checkbox(way)', function (data) {
+            console.log(data);
+            $(".way").each(function () {
+                this.checked = false;
+            })
+            data.elem.checked = true;
+            if (data.elem.name == "way[one]") {
+                $(".repetitionWay").hide();
+                params.planType = '0';
+                $(".planCount").hide();
+            } else {
+                $(".repetitionWay").show();
+                $(".planCount").show();
+                params.planType = '1';
+            }
+            form.render();
+        })
+
+        // 是否跳过节假日
+        form.on('switch(skip)', function (data) {
+            console.log(data.elem.checked);
+            if (data.elem.checked) {
+                params.holidays = '1'
+            } else {
+                params.holidays = '0'
+            }
+            form.render();
+        })
+
+        // 重复方式
+        form.on("select(repetitiveWay)", function (data) {
+            console.log(data);
+            if (data.elem.value == "everyOtherDay") {
+                $(".hint").show();
+                $(".repetitionSetting").hide();
+                params.repeat = '2'
+            } else if (data.elem.value == "week") {
+                $(".repetitionSetting").show();
+                $(".hint").hide();
+                params.repeat = '0'
+            } else {
+                $(".repetitionSetting").hide();
+                $(".hint").hide();
+            }
+
+        })
+
+        // 重复设置
+        form.on("checkbox(day)", function (data) {
+            if (data.elem.title == '全选') {
+                $(".day").each(function () {
+                    this.checked = data.elem.checked;
+                })
+            } else {
+                if (!data.elem.checked) {
+                    $(".day")[0].checked = false;
+                } else {
+                    if ($(".day")[1].checked && $(".day")[2].checked && $(".day")[3].checked && $(".day")[4].checked && $(".day")[5].checked && $(".day")[6].checked && $(".day")[6].checked) {
+                        $(".day")[0].checked = true;
+                    }
+                }
+            }
+            let week = '';
+            $('.day').each(function (index, item) {
+                if (item.checked && index != 0) {
+                    week += index + ','
+                }
+            })
+            params.week = week.substring(0, week.length - 1)
+            console.log(params.week)
+            form.render();
+        })
+
+        // 单节时长
+        form.on("select(timeSize)", function (data) {
+            params.duration = data.value;
+            if (params.beginTime) {
+                params.endTime = moment(new Date(params.beginTime)).add(Number(params.duration), 'm')
+                console.log(params.beginTime, params.endTime)
+                var edTime = new Date(params.endTime).format("hh:mm")
+                // console.log(params.endTime, edTime);
+            }
+        })
+
+        form.on("switch(clash)", function (data) {
+            console.log(data.elem.checked);
+            if (data.elem.checked) {
+                params.clash = "1";
+            } else {
+                params.clash = "0";
+            }
+        })
+
+        form.on("submit(generate)", function (data) {
+            console.log(params);
+            return false;
+            timeTable.createByPlan(params).then(res => {
+
+            })
+            return false;
+        })
+    });
+
+    $(function () {
+        $("#count").on("input", function (e) {
+            params.planCount = e.target.value;
+        })
     })
-
-    // 单节时长
-    form.on("select(timeSize)", function (data) {
-      console.log(data.value);
-    })
-
-  });
-
-
 </script>
