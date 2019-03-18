@@ -1,339 +1,310 @@
 <div class="layui-fluid">
-    <div class="layui-row">
-        <div class="layui-col-xs12">
-            <div class="layui-card" style="padding: 20px">
-                <form class="layui-form" action="">
-                    <div class="layui-form-item" pane="">
-                        <label class="layui-form-label">选择校区</label>
-                        <div class="layui-input-block">
-                            <input type="checkbox" name="like1[write]" lay-skin="primary" title="A校区">
-                            <input type="checkbox" name="like1[read]" lay-skin="primary" title="B校区">
-                            <input type="checkbox" name="like1[game]" lay-skin="primary" title="C校区">
-                        </div>
-                    </div>
-                    <div class="layui-form-item">
-                        <div class="layui-inline">
-                            <div class="layui-row layui-col-space10">
-                                <div class="layui-input-inline">
-                                    <select name="quiz">
-
-                                    </select>
-                                </div>
-                                <div class="layui-input-inline">
-                                    <select name="quiz">
-
-                                    </select>
-                                </div>
-                                <div class="layui-input-inline">
-                                    <select name="quiz">
-
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-                <div class="layui-row">
-                    <div class="layui-col-xs6">
-                        <ul class="layui-tab-title timeTab">
-                            <li class="layui-this" onclick="changeView('month')">月视图</li>
-                            <li onclick="changeView('agendaWeek')">周视图</li>
-                            <li onclick="changeView('agendaDay')">日视图</li>
-                        </ul>
-                    </div>
-                    <div class="layui-col-xs6">
-                        <ul class="legend">
-                            <li>
-                                <span>今天</span>
-                                <div class="color" style="background: #F5ECC1"></div>
-                            </li>
-                            <li>
-                                <span>冲突课程</span>
-                                <div class="color" style="background: #F8CDC2"></div>
-                            </li>
-                            <li>
-                                <span>未上课</span>
-                                <div class="color" style="background: #F5DEFA"></div>
-                            </li>
-                            <li>
-                                <span>已上课</span>
-                                <div class="color" style="background: #E9EAEB"></div>
-                            </li>
-                            <li onclick="exportExcel()">
-                                <i class="iconfont icon-xiazai" style="font-size: 18px;font-weight: bold;"></i>
-                                <div style="white-space: nowrap">导出数据</div>
-                            </li>
-                        </ul>
-                    </div>
-
-                </div>
-                <div id="calendar"></div>
+  <div class="layui-row">
+    <div class="layui-col-xs12">
+      <div class="layui-card" style="padding: 20px">
+        <form class="layui-form" action="">
+          <div class="layui-form-item" pane="">
+            <label class="layui-form-label">选择校区</label>
+            <div class="layui-input-block">
+              <input type="checkbox" name="like1[write]" lay-skin="primary" title="A校区">
+              <input type="checkbox" name="like1[read]" lay-skin="primary" title="B校区">
+              <input type="checkbox" name="like1[game]" lay-skin="primary" title="C校区">
             </div>
+          </div>
+          <div class="layui-form-item">
+            <div class="layui-inline">
+              <div class="layui-row layui-col-space10">
+                <div class="layui-input-inline">
+                  <select name="quiz">
+
+                  </select>
+                </div>
+                <div class="layui-input-inline">
+                  <select name="quiz">
+
+                  </select>
+                </div>
+                <div class="layui-input-inline">
+                  <select name="quiz">
+
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+        <div class="layui-row">
+          <div class="layui-col-xs6">
+            <ul class="layui-tab-title timeTab">
+              <li class="layui-this" onclick="changeView('month')">月视图</li>
+              <li onclick="changeView('agendaWeek')">周视图</li>
+              <li onclick="changeView('agendaDay')">日视图</li>
+            </ul>
+          </div>
+          <div class="layui-col-xs6">
+            <ul class="legend">
+              <li>
+                <span>今天</span>
+                <div class="color" style="background: #F5ECC1"></div>
+              </li>
+              <li>
+                <span>冲突课程</span>
+                <div class="color" style="background: #F8CDC2"></div>
+              </li>
+              <li>
+                <span>未上课</span>
+                <div class="color" style="background: #F5DEFA"></div>
+              </li>
+              <li>
+                <span>已上课</span>
+                <div class="color" style="background: #E9EAEB"></div>
+              </li>
+              <li onclick="exportExcel()">
+                <i class="iconfont icon-xiazai" style="font-size: 18px;font-weight: bold;"></i>
+                <div style="white-space: nowrap">导出数据</div>
+              </li>
+            </ul>
+          </div>
+
         </div>
+        <div id="calendar"></div>
+      </div>
     </div>
+  </div>
 </div>
 <script>
-    const TimeTabelBase = 'http://api.xiaoxunbang.com';
-    // const TimeTabelBase = 'http://tea.ngrok.eanfang.net:89';
-    layui.use(['form', 'jquery', 'timeTable'], function () {
-        var form = layui.form;//只有执行了这一步，部分表单元素才会自动修饰成功
-        var timeTable = layui.timeTable
-        form.render();
-    });
+  // const TimeTabelBase = 'http://api.xiaoxunbang.com';
+  const TimeTabelBase = 'http://tea.ngrok.eanfang.net:89';
+  layui.use(['form', 'jquery'], function () {
+    var form = layui.form;//只有执行了这一步，部分表单元素才会自动修饰成功
+    form.render();
+  });
 
-    // 导出
-    function exportExcel() {
-        $('#calendar').table2excel({
-            exclude: '',
-            name: 'Excel Document Name',
-            filename: '123',
-        })
-    }
-
-    // color 集合
-    const _COLOR = {
-        clash: {
-            color: '#F5ECC1',
-            background: "#F5ECC1"
-        },
-        courses: {
-            color: '#A7CCD526',
-            background: '#A7CCD526'
-        },
-        notClass: {
-            color: '#F5DEFA',
-            background: '#F5DEFA'
-        },
-        alreadyClass: {
-            color: '#E9EAEB',
-            background: '#E9EAEB'
-        }
-    }
-
-    var showTimeTabDetail = null; // 鼠标悬浮显示详情
-    var timeScope = JSON.parse(window.localStorage.getItem('classify'));
-    var timeStart = timeScope.lessonTimeScope[0].cValue;
-    var timeEnd = timeScope.lessonTimeScope[1].cValue;
-
-    console.log(timeStart, timeEnd)
-
-    // 切换视图(月，日，周)
-
-    function changeView(data) {
-        $('#calendar').fullCalendar('changeView', data)
-    }
-
-    // 设置title
-    function getTitle(data, type) {
-        if (type == "month") {
-            return (data.classEntity.name ? data.classEntity.name : '') + ' ' + (data.teacherEntity.infoEntity.realName ? data.teacherEntity.infoEntity.realName : data.teacherEntity.infoEntity.nickName)
-        } else {
-            let textcont = (data.companyEntity.name ? ("校区：" + data.companyEntity.name + "\n") : '') +
-                (data.classEntity.name ? ("班级：" + data.classEntity.name + "\n") : '') +
-                (data.subjectEntity.courseEntity.name ? ("课程：" + data.subjectEntity.courseEntity.name + "\n") : '') +
-                (data.teacherEntity.infoEntity.realName ? ("老师：" + data.teacherEntity.infoEntity.realName + "\n") : '') +
-                (data.classroomEntity.name ? ("教室：" + data.classroomEntity.name + "\n") : '')
-            return textcont
-        }
-    }
-
-    // 设置color
-    function getColor(item) {
-        if (new Date() > new Date(item.endTime)) {
-            return _COLOR.alreadyClass.background;
-        } else {
-            if (item.status == 0) {
-                return _COLOR.notClass.background
-            } else {
-                return _COLOR.alreadyClass.background;
-            }
-        }
-    }
-
-    // 将图谱挂在到指定元素上
-    $("#calendar").fullCalendar({
-        // 图谱header
-        header: {
-            left: "",
-            center: "prev, title, next",
-            right: ""
-        },
-        eventLimit: true, // 事件条数限制
-
-        // 针对不同视图的定制化显示
-        views: {
-            month: {
-                columnFormat: "ddd",
-                titleFormat: "YYYY年MM月",
-                eventLimit: 6
-            },
-            week: {
-                columnFormat: "ddd MM月DD日",
-                titleFormat: "YYYY年MM月DD日",
-            },
-
-        },
-        slotDuration: '00:20', // 周和日左侧 时间间隔
-        slotLabelInterval: '01:00', // 周和日 左侧时间间隔显示
-        slotLabelFormat: 'HH:mm', // 统一时间显示格式
-        allDaySlot: false, // 全天事件
-        scrollTime: '09:00', // 默认滚动到时间位置
-        minTime: timeStart ? (timeStart + ':00') : "00:00", // 周和天显示的最小时间
-        maxTime: timeEnd ? (timeEnd + ':00') : "24:00", // 最大时间
-        timeFormat: "HH:mm", // 显示时间格式
-        columnHeaderText: true,
-        lazyFetching: false, // 是否缓存加载
-        showNonCurrentDates: true, // 是否显示上个月日期
-        // events 事件列表
-        events: function (statr, end, timezone, callback) {
-            axios({
-                method: 'get',
-                url: TimeTabelBase + '/biz/api/coursePlan/v2/listByDate',
-                // url: "../lib/mock1.json",
-                headers: {
-                    "request-from": "BIZ",
-                    "token": window.localStorage.getItem('token'),
-                    "Content-Type": "application/json;charset=UTF-8",
-                },
-                dataType: 'json',
-                params: {
-                    begin: new Date(statr).format("yyyy-MM-dd"),
-                    end: new Date(end).format("yyyy-MM-dd"),
-                    orgIds: '1,2',
-                }
-            }).then(res => {
-                if (res.data.code == 200) {
-                    let data = res.data.data;
-                    let evnetsData = [];
-                    let viewType = $("#calendar").fullCalendar('getView')
-                    data.forEach((item, index) => {
-                        let obj = {
-                            // title: item.classEntity.name + ' ' + item.teacherEntity.infoEntity.realName,
-                            title: getTitle(item, viewType.name),
-                            start: item.beginTime,
-                            end: item.endTime,
-                            // color: item.status == 0 ? _COLOR.notClass.background : _COLOR.alreadyClass.background,
-                            color: getColor(item),
-                            detail: item
-                        }
-                        evnetsData.push(obj);
-                    })
-                    callback(evnetsData);
-                } else {
-                }
-            })
-        },
-
-        // 鼠标移入事件
-        eventMouseover: function (event, jsEvent, view) {
-            clearTimeout(showTimeTabDetail);
-            showTimeTabDetail = setTimeout(function () {
-                var x = jsEvent.clientX + 10;
-                var y = jsEvent.clientY + 10;
-                var startTime = new Date(event.detail.beginTime).format("hh:mm");
-                var endTime = new Date(event.detail.endTime).format("hh:mm");
-                var html = " <div style='left:" + x + "px; top: " + y + "px;background-color:" + event.color + " ' class=\"timeTabDetail\">\n" +
-                    "          <div class=\"detail-title\">\n" +
-                    "            校区：" + event.detail.companyEntity.name + "\n" +
-                    "          </div>\n" +
-                    "          <div class=\"detail-class\">\n" +
-                    "            班级： " + event.detail.classEntity.name + "\n" +
-                    "          </div>\n" +
-                    "          <div class=\"detail-course\">\n" +
-                    "            课程：" + event.detail.subjectEntity.courseEntity.name + "\n" +
-                    "          </div>\n" +
-                    "          <div class=\"detail-teacher\">\n" +
-                    "            老师：" + event.detail.teacherEntity.infoEntity.realName + "\n" +
-                    "          </div>\n" +
-                    "          <div class=\"detail-time\">\n" +
-                    "            时间：" + startTime + "-" + endTime + "\n" +
-                    "          </div>\n" +
-                    "          <div class=\"detail-classZoom\">\n" +
-                    "            教室： " + event.detail.classroomEntity.name + "\n" +
-                    "          </div>\n" +
-                    "        </div>"
-                $("body").append($(html));
-                $('.timeTabDetail').fadeIn();
-            }, 600)
-        },
-
-        // 鼠标移出事件
-        eventMouseout(event, jsEvent) {
-            $('.timeTabDetail').remove();
-            clearTimeout(showTimeTabDetail)
-        },
-
-
-        // 天点击事件
-        dayClick(date, jsEvent, view) {
-            let viewType = $("#calendar").fullCalendar('getView').name;
-            let courseDate = date.format("YYYY-MM-DD HH:mm");
-            let courseTime = date.format("HH:mm");
-            let course = {
-                viewType: viewType,
-                courseDate: courseDate,
-                courseTime: courseTime
-            }
-            course = JSON.stringify(course)
-            window.localStorage.setItem('course', course);
-            layer.open({
-              type: 2,
-              area: ['680px', '680px'],
-              content: ['views/biz/inventory/timeTable/components/dialog.html', 'no'],
-              end: () => {
-                queryGoods();
-              }
-            });
-            // let aaa = {
-            //     "assistantIds": "1_张三",
-            //     "beginTime": "2019-03-18 14:20",
-            //     "clash": "1",
-            //     "classId": "1",
-            //     "classSubjectId": "1",
-            //     "classroomId": "1",
-            //     "duration": "45",
-            //     "endTime": "2019-03-18 15:20",
-            //     "holidays": "1",
-            //     "planBegin": "2019-03-01",
-            //     "planCount": "5",
-            //     "planEnd": "2019-04-30",
-            //     "planType": "1",
-            //     "repeat": "0",
-            //     "teacherId": "1014084401706827776",
-            //     "week": "1,2,3,4,5,6,7"
-            // }
-            // // timeTable.createByPlan(aaa).then(res => {
-            // // })
-            //
-            // axios({
-            //     method: 'POST',
-            //     url: TimeTabelBase + "/biz/api/coursePlan/v1/createByPlan",
-            //     headers: {
-            //         "request-from": "BIZ",
-            //         "token": window.localStorage.getItem('token'),
-            //         "Content-Type": "application/json;charset=UTF-8",
-            //     },
-            //     data: aaa,
-            //     dataType: "JSON",
-            // }).then(res => {
-            //
-            // })
-        }
+  // 导出
+  function exportExcel() {
+    $('#calendar').table2excel({
+      exclude: '',
+      name: 'Excel Document Name',
+      filename: '123',
     })
+  }
 
-    function queryGoods() {
-        console.log('关闭')
+  // color 集合
+  const _COLOR = {
+    clash: {
+      color: '#F5ECC1',
+      background: "#F5ECC1"
+    },
+    courses: {
+      color: '#A7CCD526',
+      background: '#A7CCD526'
+    },
+    notClass: {
+      color: '#F5DEFA',
+      background: '#F5DEFA'
+    },
+    alreadyClass: {
+      color: '#E9EAEB',
+      background: '#E9EAEB'
     }
+  }
 
-    $(document).ready(() => {
-        layer.open({
-            type: 2,
-            area: ['780px', '680px'],
-            title: false,
-            content: ['views/biz/inventory/timeTable/components/dialog.html', 'no'],
-            end: () => {
-                queryGoods();
+  var showTimeTabDetail = null; // 鼠标悬浮显示详情
+  var timeScope = JSON.parse(window.localStorage.getItem('classify'));
+  var timeStart = timeScope.lessonTimeScope[0].cValue;
+  var timeEnd = timeScope.lessonTimeScope[1].cValue;
+
+  console.log(timeStart, timeEnd)
+
+  // 切换视图(月，日，周)
+
+  function changeView(data) {
+    $('#calendar').fullCalendar('changeView', data)
+  }
+
+  // 设置title
+  function getTitle(data, type) {
+    if (type == "month") {
+      return (data.classEntity.name ? data.classEntity.name : '') + ' ' + (data.teacherEntity.infoEntity.realName ? data.teacherEntity.infoEntity.realName : data.teacherEntity.infoEntity.nickName)
+    } else {
+      let textcont = (data.companyEntity.name ? ("校区：" + data.companyEntity.name + "\n") : '') +
+          (data.classEntity.name ? ("班级：" + data.classEntity.name + "\n") : '') +
+          (data.subjectEntity.courseEntity.name ? ("课程：" + data.subjectEntity.courseEntity.name + "\n") : '') +
+          (data.teacherEntity.infoEntity.realName ? ("老师：" + data.teacherEntity.infoEntity.realName + "\n") : '') +
+          (data.classroomEntity.name ? ("教室：" + data.classroomEntity.name + "\n") : '')
+      return textcont
+    }
+  }
+
+  // 设置color
+  function getColor(item) {
+    if (new Date() > new Date(item.endTime)) {
+      return _COLOR.alreadyClass.background;
+    } else {
+      if (item.status == 0) {
+        return _COLOR.notClass.background
+      } else {
+        return _COLOR.alreadyClass.background;
+      }
+    }
+  }
+
+  // 将图谱挂在到指定元素上
+  $("#calendar").fullCalendar({
+    // 图谱header
+    header: {
+      left: "",
+      center: "prev, title, next",
+      right: ""
+    },
+    eventLimit: true, // 事件条数限制
+
+    // 针对不同视图的定制化显示
+    views: {
+      month: {
+        columnFormat: "ddd",
+        titleFormat: "YYYY年MM月",
+        eventLimit: 6
+      },
+      week: {
+        columnFormat: "ddd MM月DD日",
+        titleFormat: "YYYY年MM月DD日",
+      },
+
+    },
+    slotDuration: '00:20', // 周和日左侧 时间间隔
+    slotLabelInterval: '01:00', // 周和日 左侧时间间隔显示
+    slotLabelFormat: 'HH:mm', // 统一时间显示格式
+    allDaySlot: false, // 全天事件
+    scrollTime: '09:00', // 默认滚动到时间位置
+    minTime: timeStart ? (timeStart + ':00') : "00:00", // 周和天显示的最小时间
+    maxTime: timeEnd ? (timeEnd + ':00') : "24:00", // 最大时间
+    timeFormat: "HH:mm", // 显示时间格式
+    columnHeaderText: true,
+    lazyFetching: false, // 是否缓存加载
+    showNonCurrentDates: true, // 是否显示上个月日期
+    // events 事件列表
+    events: function (statr, end, timezone, callback) {
+      axios({
+        method: 'get',
+        url: TimeTabelBase + '/biz/api/coursePlan/v2/listByDate',
+        // url: "../lib/mock1.json",
+        headers: {
+          "request-from": "BIZ",
+          "token": window.localStorage.getItem('token'),
+          "Content-Type": "application/json;charset=UTF-8",
+        },
+        dataType: 'json',
+        params: {
+          begin: new Date(statr).format("yyyy-MM-dd"),
+          end: new Date(end).format("yyyy-MM-dd"),
+          orgIds: '1,2',
+        }
+      }).then(res => {
+        if (res.data.code == 200) {
+          let data = res.data.data;
+          let evnetsData = [];
+          let viewType = $("#calendar").fullCalendar('getView')
+          data.forEach((item, index) => {
+            let obj = {
+              // title: item.classEntity.name + ' ' + item.teacherEntity.infoEntity.realName,
+              title: getTitle(item, viewType.name),
+              start: item.beginTime,
+              end: item.endTime,
+              // color: item.status == 0 ? _COLOR.notClass.background : _COLOR.alreadyClass.background,
+              color: getColor(item),
+              detail: item
             }
-        });
-    })
+            evnetsData.push(obj);
+          })
+          callback(evnetsData);
+        } else {
+        }
+      })
+    },
+
+    // 鼠标移入事件
+    eventMouseover: function (event, jsEvent, view) {
+      clearTimeout(showTimeTabDetail);
+      showTimeTabDetail = setTimeout(function () {
+        var x = jsEvent.clientX + 10;
+        var y = jsEvent.clientY + 10;
+        var startTime = new Date(event.detail.beginTime).format("hh:mm");
+        var endTime = new Date(event.detail.endTime).format("hh:mm");
+        var html = " <div style='left:" + x + "px; top: " + y + "px;background-color:" + event.color + " ' class=\"timeTabDetail\">\n" +
+            "          <div class=\"detail-title\">\n" +
+            "            校区：" + event.detail.companyEntity.name + "\n" +
+            "          </div>\n" +
+            "          <div class=\"detail-class\">\n" +
+            "            班级： " + event.detail.classEntity.name + "\n" +
+            "          </div>\n" +
+            "          <div class=\"detail-course\">\n" +
+            "            课程：" + event.detail.subjectEntity.courseEntity.name + "\n" +
+            "          </div>\n" +
+            "          <div class=\"detail-teacher\">\n" +
+            "            老师：" + event.detail.teacherEntity.infoEntity.realName + "\n" +
+            "          </div>\n" +
+            "          <div class=\"detail-time\">\n" +
+            "            时间：" + startTime + "-" + endTime + "\n" +
+            "          </div>\n" +
+            "          <div class=\"detail-classZoom\">\n" +
+            "            教室： " + event.detail.classroomEntity.name + "\n" +
+            "          </div>\n" +
+            "        </div>"
+        $("body").append($(html));
+        $('.timeTabDetail').fadeIn();
+      }, 600)
+    },
+
+    // 鼠标移出事件
+    eventMouseout(event, jsEvent) {
+      $('.timeTabDetail').remove();
+      clearTimeout(showTimeTabDetail)
+    },
+
+
+    // 天点击事件
+    dayClick(date, jsEvent, view) {
+      let viewType = $("#calendar").fullCalendar('getView').name;
+      let courseDate = date.format("YYYY-MM-DD HH:mm");
+      let courseTime = date.format("HH:mm");
+      let course = {
+        viewType: viewType,
+        courseDate: courseDate,
+        courseTime: courseTime
+      }
+      course = JSON.stringify(course)
+      window.localStorage.setItem('course', course);
+      layer.open({
+        type: 2,
+        area: ['780px', '680px'],
+        title: ' ',
+        content: ['views/biz/inventory/timeTable/components/dialog.html', 'yes'],
+        end: () => {
+          queryDialog();
+        }
+      });
+
+    }
+  })
+
+  function queryDialog() {
+
+    let clashFlag = window.localStorage.getItem('clash') ? true : false;
+    if (clashFlag) {
+      layer.open({
+        type: 2,
+        area: ['1180px', '680px'],
+        title: "排课冲突",
+        content: ['views/biz/inventory/timeTable/components/clash.html', 'yes'],
+        end: () => {
+          queryclash();
+        }
+      });
+    }
+  }
+
+  function queryclash() {
+
+  }
 </script>

@@ -54,6 +54,17 @@ layui.define(['jquery', 'utils', 'fetch', 'tools'], function (exports) {
         },
 
 
+        // 覆盖专用
+        createByReplace: (data) => {
+          return tools.baseApi(
+              fetch({
+                method: 'post',
+                url: "/biz/api/coursePlan/v2/createByReplace",
+                data: data,
+              })
+          );
+        }
+
       };
 
       //输出menu接口

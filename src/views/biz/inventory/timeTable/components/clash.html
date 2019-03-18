@@ -1,0 +1,131 @@
+<script src="/lib/layui/layui.js"></script>
+<script src="/js/config/config.js"></script>
+<script src="../../../../../lib/timeTable/static/jquery.min.js"></script>
+<style>
+  .layui-form-checkbox[lay-skin=primary] span {
+    width: 100px;
+  }
+</style>
+<div class="layui-fluid">
+  <div class="layui-row">
+    <div class="layui-col-xs6" style="width: 480px;margin-right: 5px">
+      <table id="demo" lay-filter="test"></table>
+    </div>
+    <div class="layui-col-xs6" style="width: 650px;">
+      <table id="demo1" lay-filter="test"></table>
+    </div>
+
+    <div class="layui-col-xs12" style="text-align: center">
+      <button class="layui-btn layui-btn-normal" id="sub" style="width: 180px">确定</button>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  layui.use(['table', 'timeTable', 'form'], function () {
+    var table = layui.table;
+    const timeTable = layui.timeTable;
+    var form = layui.form;
+    var clarnData = JSON.parse(window.localStorage.getItem('clash'));
+    window.localStorage.removeItem('clash');
+    console.log(clarnData)
+    table.render({
+      elem: '#demo',
+      height: 312,
+      // , url: '/demo/table/user/' //数据接口,
+      data: JSON.parse(window.localStorage.getItem('clarn')).newClash,
+      cols: [[ //表头
+        {field: 'id', type: 'numbers', title: '序号', width: 20, fixed: 'left'},
+        {field: 'name', title: '当前课程', width: 80, templet: (d) => d.subjectEntity.courseEntity.name},
+        {field: 'classRoom', title: '教室', width: 80, templet: (d) => d.classroomEntity.name},
+        {field: 'city', title: '班级', width: 80, templet: (d) => d.classEntity.name},
+        {field: 'sign', title: '老师', width: 80, templet: (d) => d.teacherEntity.infoEntity.nickName},
+        {field: 'sign', title: '上课日期', width: 140, templet: (d) => d.beginTime},
+      ]]
+    });
+    table.render({
+      elem: '#demo1',
+      height: 312,
+      // , url: '/demo/table/user/' //数据接口,
+      data: JSON.parse(window.localStorage.getItem('clarn')).oldClash,
+      cols: [[ //表头
+        {field: 'name', title: '冲突课程', width: 80, templet: (d) => d.subjectEntity.courseEntity.name},
+        {field: 'classRoom', title: '教室', width: 80, templet: (d) => d.classroomEntity.name},
+        {field: 'city', title: '班级', width: 80, templet: (d) => d.classEntity.name},
+        {field: 'sign', title: '老师', width: 80, templet: (d) => d.teacherEntity.infoEntity.nickName},
+        {field: 'sign', title: '上课日期', width: 121, templet: (d) => d.beginTime},
+        {title: '解决冲突', width: 200, align: 'center', toolbar: '#toolBar', align: "center"}
+      ]]
+    });
+
+
+    var coverData = [];
+
+    table.on('tool(test)', (obj) => {
+      console.log(obj);
+      const data = obj.data; //获得当前行数据
+      const layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+      const tr = obj.tr; //获得当前行 tr 的DOM对象
+
+      clarnData.oldClash.forEach((item, index) => {
+        console.log(index, item)
+        if (item.id == data.id) {
+          $(".way")[index].checked = false;
+          $(".jump")[index].checked = false;
+          if (layEvent == "one") {
+            $(".way")[index].checked = true;
+          } else {
+            $(".jump")[index].checked = true;
+          }
+        }
+      })
+      form.render();
+
+
+      coverData = [];
+      $(".way").each((index, item) => {
+        console.log(index, item.checked);
+        let data = clarnData.newClash[index];
+        if (item.checked) {
+          var obj = {
+            assistantIds: data.assistantIds,
+            beginTime: data.beginTime,
+            classId: data.classId,
+            classSubjectId: data.classSubjectId,
+            classroomId: data.classroomId,
+            companyId: data.companyId,
+            createStaffId: data.createStaffId,
+            createTime: data.createTime,
+            duration: data.duration,
+            endTime: data.endTime,
+            id: data.id,
+            status: data.status,
+            teacherId: data.teacherId,
+          }
+          coverData.push(obj)
+        }
+      })
+    })
+
+    $(function () {
+      $("#sub").on('click', function () {
+        timeTable.createByReplace(coverData).then(res => {
+
+        })
+      })
+    })
+  })
+
+</script>
+<script type="text/html" id="toolBar">
+  <a lay-event="one">
+    <input type="checkbox" class="way" name="way[one]" lay-filter="way" lay-skin="primary"
+           title="覆盖" checked style="width: 100px">
+  </a>
+  <a lay-event="more">
+    <input type="checkbox" class="jump" name="way[more]" lay-filter="way" lay-skin="primary"
+           title="跳过" style="width: 100px">
+  </a>
+
+</script>
