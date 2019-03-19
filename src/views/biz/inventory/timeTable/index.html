@@ -37,7 +37,7 @@
           <div class="layui-col-xs6">
             <ul class="layui-tab-title timeTab">
               <li class="layui-this" onclick="changeView('month')">月视图</li>
-              <li onclick="changeView('agendaWeek')">周视图</li>
+              <li onclick="changeView('basicWeek')">周视图</li>
               <li onclick="changeView('agendaDay')">日视图</li>
             </ul>
           </div>
@@ -124,7 +124,7 @@
 
   // 设置title
   function getTitle(data, type) {
-    if (type == "month") {
+    if (type == "basicWeek") {
       return (data.classEntity.name ? data.classEntity.name : '') + ' ' + (data.teacherEntity.infoEntity.realName ? data.teacherEntity.infoEntity.realName : data.teacherEntity.infoEntity.nickName)
     } else {
       let textcont = (data.companyEntity.name ? ("校区：" + data.companyEntity.name + "\n") : '') +
@@ -158,19 +158,20 @@
       right: ""
     },
     eventLimit: true, // 事件条数限制
+      eventLimit: 2,
 
     // 针对不同视图的定制化显示
     views: {
       month: {
         columnFormat: "ddd",
         titleFormat: "YYYY年MM月",
-        eventLimit: 6
+        // eventLimit: 6
       },
       week: {
         columnFormat: "ddd MM月DD日",
         titleFormat: "YYYY年MM月DD日",
+        eventLimit: 20
       },
-
     },
     slotDuration: '00:20', // 周和日左侧 时间间隔
     slotLabelInterval: '01:00', // 周和日 左侧时间间隔显示
@@ -211,9 +212,10 @@
               title: getTitle(item, viewType.name),
               start: item.beginTime,
               end: item.endTime,
+              block: true,
               // color: item.status == 0 ? _COLOR.notClass.background : _COLOR.alreadyClass.background,
               color: getColor(item),
-              detail: item
+              detail: item,
             }
             evnetsData.push(obj);
           })
