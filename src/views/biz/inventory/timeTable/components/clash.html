@@ -34,7 +34,7 @@
       elem: '#demo',
       height: 312,
       // , url: '/demo/table/user/' //数据接口,
-      data: JSON.parse(window.localStorage.getItem('clarn')).newClash,
+      data: clarnData.newClash,
       cols: [[ //表头
         {field: 'id', type: 'numbers', title: '序号', width: 20, fixed: 'left'},
         {field: 'name', title: '当前课程', width: 80, templet: (d) => d.subjectEntity.courseEntity.name},
@@ -48,7 +48,7 @@
       elem: '#demo1',
       height: 312,
       // , url: '/demo/table/user/' //数据接口,
-      data: JSON.parse(window.localStorage.getItem('clarn')).oldClash,
+      data: clarnData.oldClash,
       cols: [[ //表头
         {field: 'name', title: '冲突课程', width: 80, templet: (d) => d.subjectEntity.courseEntity.name},
         {field: 'classRoom', title: '教室', width: 80, templet: (d) => d.classroomEntity.name},

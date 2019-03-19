@@ -206,7 +206,7 @@
       endTime: '',
       holidays: '0',
       planBegin: '',
-      planCount: '5',
+      planCount: '',
       planEnd: '',
       planType: '0',
       repeat: '',
@@ -469,16 +469,21 @@
       })
       return false;
     })
+
+
+      $(function () {
+          $("#count").on("input", function (e) {
+              console.log(e.target.value)
+              params.planCount = e.target.value;
+          })
+          $("#cancel").on("click", function (e) {
+              var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+              parent.layer.close(index);
+              return false;
+          })
+      })
+
   });
 
-  $(function () {
-    $("#count").on("input", function (e) {
-      params.planCount = e.target.value;
-    })
-    $("#cancel").on("click", function (e) {
-      var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
-      parent.layer.close(index);
-      return false;
-    })
-  })
+
 </script>
