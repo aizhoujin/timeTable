@@ -187,8 +187,6 @@
     var timeStart = timeScope.lessonTimeScope[0].cValue;
     var timeEnd = timeScope.lessonTimeScope[1].cValue;
 
-    console.log(timeStart, timeEnd)
-
     // 切换视图(月，日，周)
     window.changeView = function (data) {
       $('#calendar').fullCalendar('changeView', data)
@@ -196,14 +194,9 @@
 
     // 设置title
     function getTitle(data, type) {
-      console.log(2, data.teacherEntity);
       if (type == "basicWeek") {
         return (data.classEntity.name ? data.classEntity.name : '') + ' ' + (data.teacherEntity.infoEntity.realName ? data.teacherEntity.infoEntity.realName : data.teacherEntity.infoEntity.nickName)
       } else {
-        // console.log(1, data);
-        // console.log(4,data.teacherId)
-        // console.log(2, data.teacherEntity)
-        // console.log(3, data.subjectEntity)
         let textcont = (data.companyEntity.name ? ("校区：" + data.companyEntity.name + "\n") : '') +
             (data.classEntity.name ? ("班级：" + data.classEntity.name + "\n") : '') +
             (data.subjectEntity.courseEntity.name ? ("课程：" + data.subjectEntity.courseEntity.name + "\n") : '') +
@@ -270,7 +263,6 @@
         }
         timeTable.listByDate(params).then(res => {
           cfx.close();
-          console.log(res.data);
           if (res.code == 200) {
             let data = res.data;
             let evnetsData = [];
@@ -286,7 +278,6 @@
               };
               evnetsData.push(obj);
             })
-            console.log(evnetsData)
             callback(evnetsData);
           } else {
           }
@@ -364,17 +355,19 @@
     // 排课弹窗关闭事件
     function queryDialog() {
       let clashFlag = window.localStorage.getItem('clash') ? true : false;
-      if (clashFlag) {
-        layer.open({
-          type: 2,
-          area: ['1180px', '680px'],
-          title: "排课冲突",
-          content: ['views/biz/inventory/timeTable/components/clash.html', 'yes'],
-          end: () => {
-            queryclash();
-          }
-        });
-      } else {
+      let createByPlanResult = JSON.parse(window.sessionStorage.getItem('createByPlanResult'))
+      if (createByPlanResult && createByPlanResult.newClash){
+          layer.open({
+              type: 2,
+              area: ['1180px', '680px'],
+              title: "排课冲突",
+              content: ['views/biz/inventory/timeTable/components/clash.html', 'yes'],
+              end: () => {
+                  queryclash();
+              }
+          });
+      }else if (createByPlanResult && createByPlanResult.code == 200){
+          layer.msg('排课成功');
       }
     }
 

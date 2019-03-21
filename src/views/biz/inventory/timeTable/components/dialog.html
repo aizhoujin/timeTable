@@ -457,6 +457,7 @@
       cfx.loading();
       timeTable.createByPlan(params).then(res => {
         cfx.close();
+        window.sessionStorage.setItem('createByPlanResult', JSON.stringify(res));
         if (res.data.newClash && res.data.oldClash) {
           layer.msg('排课冲突!');
           let clashData = {
