@@ -4,30 +4,31 @@
       <div class="layui-card" style="padding: 20px">
         <form class="layui-form" action="">
           <div class="layui-form-item" pane="">
-            <label class="layui-form-label">选择校区</label>
-            <div class="layui-input-block">
-              <input type="checkbox" name="like1[write]" lay-skin="primary" title="A校区">
-              <input type="checkbox" name="like1[read]" lay-skin="primary" title="B校区">
-              <input type="checkbox" name="like1[game]" lay-skin="primary" title="C校区">
+            <label class="layui-form-label">选择校区：</label>
+            <div class="layui-input-block" id="selectCompany">
             </div>
           </div>
           <div class="layui-form-item">
             <div class="layui-inline">
               <div class="layui-row layui-col-space10">
                 <div class="layui-input-inline">
-                  <select name="quiz">
-
+                  <select name="teacherSelct" id="teacherSelct" lay-filter="teacherSelct" lay-verify="teacherSelct">
+                    <option value="">请选择教师</option>
                   </select>
                 </div>
                 <div class="layui-input-inline">
-                  <select name="quiz">
-
+                  <select name="classGrade" id="classGrade" lay-verify="classGrade">
+                    <option value="">请选择班级</option>
                   </select>
                 </div>
                 <div class="layui-input-inline">
-                  <select name="quiz">
-
+                  <select name="classRoom" id="classRoom" lay-verify="classRoom">
+                    <option value="">请选择教室</option>
                   </select>
+                </div>
+                <div class="layui-input-inline" style="cursor: pointer;">
+                  <i class="iconfont icon-shaixuan"
+                     style="width: 35px;line-height: 38px;font-size: 25px;color: #3278F0"></i>
                 </div>
               </div>
             </div>
@@ -73,240 +74,314 @@
   </div>
 </div>
 <script>
-  const TimeTabelBase = 'http://api.xiaoxunbang.com';
-  // const TimeTabelBase = 'http://tea.ngrok.eanfang.net:89';
-  layui.use(['form', 'jquery'], function () {
+  layui.use(['form', 'jquery', 'timeTable', 'staffApi'], function () {
     var form = layui.form;//只有执行了这一步，部分表单元素才会自动修饰成功
+    const timeTable = layui.timeTable;
+    const staffApi = layui.staffApi;
     form.render();
-  });
 
-  // 导出
-  function exportExcel() {
-    $('#calendar').table2excel({
-      exclude: '',
-      name: 'Excel Document Name',
-      filename: '123',
+    var orgIds = '';
+
+    // 获取校区列表
+    let user = JSON.parse(window.localStorage.getItem('user'));
+    timeTable.listCompanyByTop(user.topCompany.topCompanyId).then(res => {
+      let companyList = res.data;
+      let checkLi = '';
+      for (let i = 0; i < companyList.length; i++) {
+        checkLi += ('<input type="checkbox" class="companyLi" checked name="' + companyList[i].orgId + '" lay-skin="primary" title="' + companyList[i].name + '"  lay-filter="selectCompany">');
+        orgIds += companyList[i].orgId + ','
+      }
+      orgIds = orgIds.substring(0, orgIds.length - 1);
+      $('#calendar').fullCalendar('refetchEvents');
+      $("#selectCompany").html(checkLi);
+      form.render();
+    });
+
+    // 接口参数
+    let obj = {
+      "equals": {},
+      "page": 1,
+      "size": 10,
+    }
+
+    // 选择教室数据
+    timeTable.getClassRoom(obj).then(res => {
+      let data = res.data.list;
+      let optionLi = '<option value="">请选择教室</option>';
+      for (let i = 0; i < data.length; i++) {
+        optionLi += ("<option value=" + data[i].id + ">" + data[i].name + "</option>")
+      }
+      $("#classRoom").html(optionLi)
+      form.render();
     })
-  }
 
-  // color 集合
-  const _COLOR = {
-    clash: {
-      color: '#F5ECC1',
-      background: "#F5ECC1"
-    },
-    courses: {
-      color: '#A7CCD526',
-      background: '#A7CCD526'
-    },
-    notClass: {
-      color: '#F5DEFA',
-      background: '#F5DEFA'
-    },
-    alreadyClass: {
-      color: '#E9EAEB',
-      background: '#E9EAEB'
-    }
-  }
+    // 获取教师列表
+    staffApi.selector(obj).then(res => {
+      let data = res.data.list;
+      let optionLi = '<option value="">请选择教师</option>';
+      for (let i = 0; i < data.length; i++) {
+        optionLi += ("<option value=" + data[i].id + ">" + data[i].infoEntity.realName + "</option>")
+      }
+      $("#teacherSelct").html(optionLi);
+      form.render();
+    })
 
-  var showTimeTabDetail = null; // 鼠标悬浮显示详情
-  var timeScope = JSON.parse(window.localStorage.getItem('classify'));
-  var timeStart = timeScope.lessonTimeScope[0].cValue;
-  var timeEnd = timeScope.lessonTimeScope[1].cValue;
+    // 获取班级列表
+    timeTable.selector(obj).then(res => {
+      let data = res.data.list;
+      let optionLi = '<option value="">请选择班级</option>';
+      for (let i = 0; i < data.length; i++) {
+        optionLi += ("<option value=" + data[i].id + ">" + data[i].name + "</option>")
+      }
+      $("#classGrade").html(optionLi)
+      form.render();
+    })
 
-  console.log(timeStart, timeEnd)
+    // 监听select
+    form.on('select', (data) => {
+      console.log(data);
+    })
 
-  // 切换视图(月，日，周)
+    // 监听checkbox
+    form.on('checkbox(selectCompany)', (data) => {
+      orgIds = '';
+      $('.companyLi').each((index, item) => {
+        if (item.checked) {
+          orgIds += item.name + ','
+        }
+      });
+      orgIds = orgIds.substring(0, orgIds.length - 1);
+    });
 
-  function changeView(data) {
-    $('#calendar').fullCalendar('changeView', data)
-  }
+    // 导出
+    // function exportExcel() {
+    //   $('#calendar').table2excel({
+    //     exclude: '',
+    //     name: 'Excel Document Name',
+    //     filename: '123',
+    //   })
+    // }
 
-  // 设置title
-  function getTitle(data, type) {
-    if (type == "basicWeek") {
-      return (data.classEntity.name ? data.classEntity.name : '') + ' ' + (data.teacherEntity.infoEntity.realName ? data.teacherEntity.infoEntity.realName : data.teacherEntity.infoEntity.nickName)
-    } else {
-      let textcont = (data.companyEntity.name ? ("校区：" + data.companyEntity.name + "\n") : '') +
-          (data.classEntity.name ? ("班级：" + data.classEntity.name + "\n") : '') +
-          (data.subjectEntity.courseEntity.name ? ("课程：" + data.subjectEntity.courseEntity.name + "\n") : '') +
-          (data.teacherEntity.infoEntity.realName ? ("老师：" + data.teacherEntity.infoEntity.realName + "\n") : '') +
-          (data.classroomEntity.name ? ("教室：" + data.classroomEntity.name + "\n") : '')
-      return textcont
-    }
-  }
-
-  // 设置color
-  function getColor(item) {
-    if (new Date() > new Date(item.endTime)) {
-      return _COLOR.alreadyClass.background;
-    } else {
-      if (item.status == 0) {
-        return _COLOR.notClass.background
-      } else {
-        return _COLOR.alreadyClass.background;
+    // color 集合
+    const _COLOR = {
+      clash: {
+        color: '#F5ECC1',
+        background: "#F5ECC1"
+      },
+      courses: {
+        color: '#A7CCD526',
+        background: '#A7CCD526'
+      },
+      notClass: {
+        color: '#F5DEFA',
+        background: '#F5DEFA'
+      },
+      alreadyClass: {
+        color: '#E9EAEB',
+        background: '#E9EAEB'
       }
     }
-  }
 
-  // 将图谱挂在到指定元素上
-  $("#calendar").fullCalendar({
-    // 图谱header
-    header: {
-      left: "",
-      center: "prev, title, next",
-      right: ""
-    },
-    eventLimit: true, // 事件条数限制
-      eventLimit: 2,
+    var showTimeTabDetail = null; // 鼠标悬浮显示详情
+    var timeScope = JSON.parse(window.localStorage.getItem('classify'));
+    var timeStart = timeScope.lessonTimeScope[0].cValue;
+    var timeEnd = timeScope.lessonTimeScope[1].cValue;
 
-    // 针对不同视图的定制化显示
-    views: {
-      month: {
-        columnFormat: "ddd",
-        titleFormat: "YYYY年MM月",
-        // eventLimit: 6
+    console.log(timeStart, timeEnd)
+
+    // 切换视图(月，日，周)
+    window.changeView = function (data) {
+      $('#calendar').fullCalendar('changeView', data)
+    }
+
+    // 设置title
+    function getTitle(data, type) {
+      console.log(2, data.teacherEntity);
+      if (type == "basicWeek") {
+        return (data.classEntity.name ? data.classEntity.name : '') + ' ' + (data.teacherEntity.infoEntity.realName ? data.teacherEntity.infoEntity.realName : data.teacherEntity.infoEntity.nickName)
+      } else {
+        // console.log(1, data);
+        // console.log(4,data.teacherId)
+        // console.log(2, data.teacherEntity)
+        // console.log(3, data.subjectEntity)
+        let textcont = (data.companyEntity.name ? ("校区：" + data.companyEntity.name + "\n") : '') +
+            (data.classEntity.name ? ("班级：" + data.classEntity.name + "\n") : '') +
+            (data.subjectEntity.courseEntity.name ? ("课程：" + data.subjectEntity.courseEntity.name + "\n") : '') +
+            (data.teacherEntity.infoEntity.realName ? ("老师：" + data.teacherEntity.infoEntity.realName + "\n") : '') +
+            (data.classroomEntity.name ? ("教室：" + data.classroomEntity.name + "\n") : '')
+        return textcont
+      }
+    }
+
+    // 设置color
+    function getColor(item) {
+      if (new Date() > new Date(item.endTime)) {
+        return _COLOR.alreadyClass.background;
+      } else {
+        if (item.status == 0) {
+          return _COLOR.notClass.background
+        } else {
+          return _COLOR.alreadyClass.background;
+        }
+      }
+    }
+
+    // 将图谱挂在到指定元素上
+    $("#calendar").fullCalendar({
+      // 图谱header
+      header: {
+        left: "",
+        center: "prev, title, next",
+        right: ""
       },
-      week: {
-        columnFormat: "ddd MM月DD日",
-        titleFormat: "YYYY年MM月DD日",
-        eventLimit: 20
-      },
-    },
-    slotDuration: '00:20', // 周和日左侧 时间间隔
-    slotLabelInterval: '01:00', // 周和日 左侧时间间隔显示
-    slotLabelFormat: 'HH:mm', // 统一时间显示格式
-    allDaySlot: false, // 全天事件
-    scrollTime: '09:00', // 默认滚动到时间位置
-    minTime: timeStart ? (timeStart + ':00') : "00:00", // 周和天显示的最小时间
-    maxTime: timeEnd ? (timeEnd + ':00') : "24:00", // 最大时间
-    timeFormat: "HH:mm", // 显示时间格式
-    columnHeaderText: true,
-    lazyFetching: false, // 是否缓存加载
-    showNonCurrentDates: true, // 是否显示上个月日期
-    // events 事件列表
-    events: function (statr, end, timezone, callback) {
-      axios({
-        method: 'get',
-        url: TimeTabelBase + '/biz/api/coursePlan/v2/listByDate',
-        // url: "../lib/mock1.json",
-        headers: {
-          "request-from": "BIZ",
-          "token": window.localStorage.getItem('token'),
-          "Content-Type": "application/json;charset=UTF-8",
+      eventLimit: true, // 事件条数限制
+
+      // 针对不同视图的定制化显示
+      views: {
+        month: {
+          columnFormat: "ddd",
+          titleFormat: "YYYY年MM月",
+          eventLimit: 6
         },
-        dataType: 'json',
-        params: {
+        week: {
+          columnFormat: "ddd MM月DD日",
+          titleFormat: "YYYY年MM月DD日",
+          eventLimit: 20
+        },
+      },
+      slotDuration: '00:20', // 周和日左侧 时间间隔
+      slotLabelInterval: '01:00', // 周和日 左侧时间间隔显示
+      slotLabelFormat: 'HH:mm', // 统一时间显示格式
+      allDaySlot: false, // 全天事件
+      scrollTime: '09:00', // 默认滚动到时间位置
+      minTime: timeStart ? (timeStart + ':00') : "00:00", // 周和天显示的最小时间
+      maxTime: timeEnd ? (timeEnd + ':00') : "24:00", // 最大时间
+      timeFormat: "HH:mm", // 显示时间格式
+      columnHeaderText: true,
+      lazyFetching: false, // 是否缓存加载
+      showNonCurrentDates: true, // 是否显示上个月日期
+      // events 事件列表
+      events: function (statr, end, timezone, callback) {
+        cfx.loading();
+        let params = {
           begin: new Date(statr).format("yyyy-MM-dd"),
           end: new Date(end).format("yyyy-MM-dd"),
-          orgIds: '1,2',
+          orgIds: orgIds,
         }
-      }).then(res => {
-        if (res.data.code == 200) {
-          let data = res.data.data;
-          let evnetsData = [];
-          let viewType = $("#calendar").fullCalendar('getView')
-          data.forEach((item, index) => {
-            let obj = {
-              // title: item.classEntity.name + ' ' + item.teacherEntity.infoEntity.realName,
-              title: getTitle(item, viewType.name),
-              start: item.beginTime,
-              end: item.endTime,
-              block: true,
-              // color: item.status == 0 ? _COLOR.notClass.background : _COLOR.alreadyClass.background,
-              color: getColor(item),
-              detail: item,
+        timeTable.listByDate(params).then(res => {
+          cfx.close();
+          console.log(res.data);
+          if (res.code == 200) {
+            let data = res.data;
+            let evnetsData = [];
+            let viewType = $("#calendar").fullCalendar('getView');
+
+            data.forEach((item, index) => {
+              let obj = {
+                title: getTitle(item, viewType.name),
+                start: item.beginTime,
+                end: item.endTime,
+                color: getColor(item),
+                detail: item,
+              };
+              evnetsData.push(obj);
+            })
+            console.log(evnetsData)
+            callback(evnetsData);
+          } else {
+          }
+        })
+      },
+
+      // 鼠标移入事件
+      eventMouseover: function (event, jsEvent, view) {
+        clearTimeout(showTimeTabDetail);
+        showTimeTabDetail = setTimeout(function () {
+          var x = jsEvent.clientX + 10;
+          var y = jsEvent.clientY + 10;
+          var startTime = new Date(event.detail.beginTime).format("hh:mm");
+          var endTime = new Date(event.detail.endTime).format("hh:mm");
+          var html = " <div style='left:" + x + "px; top: " + y + "px;background-color:" + event.color + " ' class=\"timeTabDetail\">\n" +
+              "          <div class=\"detail-title\">\n" +
+              "            校区：" + event.detail.companyEntity.name + "\n" +
+              "          </div>\n" +
+              "          <div class=\"detail-class\">\n" +
+              "            班级： " + event.detail.classEntity.name + "\n" +
+              "          </div>\n" +
+              "          <div class=\"detail-course\">\n" +
+              "            课程：" + event.detail.subjectEntity.courseEntity.name + "\n" +
+              "          </div>\n" +
+              "          <div class=\"detail-teacher\">\n" +
+              "            老师：" + event.detail.teacherEntity.infoEntity.realName + "\n" +
+              "          </div>\n" +
+              "          <div class=\"detail-time\">\n" +
+              "            时间：" + startTime + "-" + endTime + "\n" +
+              "          </div>\n" +
+              "          <div class=\"detail-classZoom\">\n" +
+              "            教室： " + event.detail.classroomEntity.name + "\n" +
+              "          </div>\n" +
+              "        </div>"
+          $("body").append($(html));
+          $('.timeTabDetail').fadeIn();
+        }, 600)
+      },
+
+      // 鼠标移出事件
+      eventMouseout(event, jsEvent) {
+        $('.timeTabDetail').remove();
+        clearTimeout(showTimeTabDetail)
+      },
+
+      // day点击事件
+      dayClick(date, jsEvent, view) {
+        let DateFlag = (new Date().format("yyyy-MM-dd")) <= date.format("YYYY-MM-DD");
+        if (DateFlag) {
+          let viewType = $("#calendar").fullCalendar('getView').name;
+          let courseDate = date.format("YYYY-MM-DD HH:mm");
+          let courseTime = date.format("HH:mm");
+          let course = {
+            viewType: viewType,
+            courseDate: courseDate,
+            courseTime: courseTime
+          }
+          course = JSON.stringify(course)
+          window.localStorage.setItem('course', course);
+          layer.open({
+            type: 2,
+            area: ['780px', '680px'],
+            title: ' ',
+            content: ['views/biz/inventory/timeTable/components/dialog.html', 'yes'],
+            end: () => {
+              queryDialog();
             }
-            evnetsData.push(obj);
-          })
-          callback(evnetsData);
+          });
         } else {
+          layer.msg('不能对过去的日期进行操作');
         }
-      })
-    },
-
-    // 鼠标移入事件
-    eventMouseover: function (event, jsEvent, view) {
-      clearTimeout(showTimeTabDetail);
-      showTimeTabDetail = setTimeout(function () {
-        var x = jsEvent.clientX + 10;
-        var y = jsEvent.clientY + 10;
-        var startTime = new Date(event.detail.beginTime).format("hh:mm");
-        var endTime = new Date(event.detail.endTime).format("hh:mm");
-        var html = " <div style='left:" + x + "px; top: " + y + "px;background-color:" + event.color + " ' class=\"timeTabDetail\">\n" +
-            "          <div class=\"detail-title\">\n" +
-            "            校区：" + event.detail.companyEntity.name + "\n" +
-            "          </div>\n" +
-            "          <div class=\"detail-class\">\n" +
-            "            班级： " + event.detail.classEntity.name + "\n" +
-            "          </div>\n" +
-            "          <div class=\"detail-course\">\n" +
-            "            课程：" + event.detail.subjectEntity.courseEntity.name + "\n" +
-            "          </div>\n" +
-            "          <div class=\"detail-teacher\">\n" +
-            "            老师：" + event.detail.teacherEntity.infoEntity.realName + "\n" +
-            "          </div>\n" +
-            "          <div class=\"detail-time\">\n" +
-            "            时间：" + startTime + "-" + endTime + "\n" +
-            "          </div>\n" +
-            "          <div class=\"detail-classZoom\">\n" +
-            "            教室： " + event.detail.classroomEntity.name + "\n" +
-            "          </div>\n" +
-            "        </div>"
-        $("body").append($(html));
-        $('.timeTabDetail').fadeIn();
-      }, 600)
-    },
-
-    // 鼠标移出事件
-    eventMouseout(event, jsEvent) {
-      $('.timeTabDetail').remove();
-      clearTimeout(showTimeTabDetail)
-    },
-
-
-    // 天点击事件
-    dayClick(date, jsEvent, view) {
-      let viewType = $("#calendar").fullCalendar('getView').name;
-      let courseDate = date.format("YYYY-MM-DD HH:mm");
-      let courseTime = date.format("HH:mm");
-      let course = {
-        viewType: viewType,
-        courseDate: courseDate,
-        courseTime: courseTime
       }
-      course = JSON.stringify(course)
-      window.localStorage.setItem('course', course);
-      layer.open({
-        type: 2,
-        area: ['780px', '680px'],
-        title: ' ',
-        content: ['views/biz/inventory/timeTable/components/dialog.html', 'yes'],
-        end: () => {
-          queryDialog();
-        }
-      });
+    })
+
+    // 排课弹窗关闭事件
+    function queryDialog() {
+      let clashFlag = window.localStorage.getItem('clash') ? true : false;
+      if (clashFlag) {
+        layer.open({
+          type: 2,
+          area: ['1180px', '680px'],
+          title: "排课冲突",
+          content: ['views/biz/inventory/timeTable/components/clash.html', 'yes'],
+          end: () => {
+            queryclash();
+          }
+        });
+      } else {
+      }
+    }
+
+    function queryclash() {
 
     }
-  })
+  });
 
-  function queryDialog() {
 
-    let clashFlag = window.localStorage.getItem('clash') ? true : false;
-    if (clashFlag) {
-      layer.open({
-        type: 2,
-        area: ['1180px', '680px'],
-        title: "排课冲突",
-        content: ['views/biz/inventory/timeTable/components/clash.html', 'yes'],
-        end: () => {
-          queryclash();
-        }
-      });
-    }
-  }
-
-  function queryclash() {
-
-  }
 </script>

@@ -257,7 +257,7 @@
       "size": 10,
     }
 
-    // 选择班级之后联动科目选择框请求
+    // 获取班级列表
     timeTable.selector(obj).then(res => {
       let data = res.data.list;
       let optionLi = '<option value="">请选择班级</option>';
@@ -269,7 +269,7 @@
     })
 
     // 选择教室数据
-    timeTable.classRoom(obj).then(res => {
+    timeTable.getClassRoom(obj).then(res => {
       let data = res.data.list;
       let optionLi = '<option value="">请选择教室</option>';
       for (let i = 0; i < data.length; i++) {
@@ -458,11 +458,14 @@
       timeTable.createByPlan(params).then(res => {
         cfx.close();
         if (res.data.newClash && res.data.oldClash) {
+          layer.msg('排课冲突!');
           let clashData = {
             newClash: res.data.newClash,
             oldClash: res.data.oldClash
           }
           window.localStorage.setItem("clash", JSON.stringify(clashData));
+        }else {
+          layer.msg('排课成功!');
         }
         var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
         parent.layer.close(index);

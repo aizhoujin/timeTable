@@ -7,6 +7,41 @@ layui.define(['jquery', 'utils', 'fetch', 'tools'], function (exports) {
       const tools = layui.tools;
 
       const timeTable = {
+        // 获取校区列表
+        listCompanyByTop: (data) => {
+          return tools.baseApi(
+              fetch({
+                method: 'post',
+                url: "/biz/api/org/v1/listCompanyByTop",
+                params: {'topId': data},
+              })
+          );
+        },
+
+        // 根据时间获取排课列表
+
+        listByDate: (data) => {
+          return tools.baseApi(
+              fetch({
+                method: 'post',
+                url: "/biz/api/coursePlan/v2/listByDate",
+                params: data,
+              })
+          );
+        },
+
+        // 获取教室
+        getClassRoom: (data) => {
+          return tools.baseApi(
+              fetch({
+                method: 'post',
+                url: "/biz/api/classroom/v1/selector",
+                data: {data},
+              })
+          );
+        },
+
+
         // 班级选择器专用接口
         selector: (data) => {
           return tools.baseApi(
@@ -31,19 +66,9 @@ layui.define(['jquery', 'utils', 'fetch', 'tools'], function (exports) {
           );
         },
 
-        // 教师选择器
-        classRoom: (data) => {
-          return tools.baseApi(
-              fetch({
-                method: 'post',
-                url: "/biz/api/classroom/v1/selector",
-                data: {data},
-              })
-          );
-        },
 
         // 生成排课记录
-          createByPlan: (data) => {
+        createByPlan: (data) => {
           return tools.baseApi(
               fetch({
                 method: 'post',
