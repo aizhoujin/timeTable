@@ -12,22 +12,22 @@
             <div class="layui-inline">
               <div class="layui-row layui-col-space10">
                 <div class="layui-input-inline">
-                  <select name="teacherSelct" id="teacherSelct" lay-filter="teacherSelct" lay-verify="teacherSelct">
+                  <select name="teacherSelect" id="teacherSelect" lay-filter="teacherFil">
                     <option value="">请选择教师</option>
                   </select>
                 </div>
                 <div class="layui-input-inline">
-                  <select name="classGrade" id="classGrade" lay-verify="classGrade">
+                  <select name="classGrade" id="classGrade" lay-filter="classFil">
                     <option value="">请选择班级</option>
                   </select>
                 </div>
                 <div class="layui-input-inline">
-                  <select name="classRoom" id="classRoom" lay-verify="classRoom">
+                  <select name="classRoom" id="classRoom" lay-filter="classroomFil">
                     <option value="">请选择教室</option>
                   </select>
                 </div>
                 <div class="layui-input-inline" style="cursor: pointer;">
-                  <i class="iconfont icon-shaixuan"
+                  <i class="iconfont icon-shaixuan" onclick="filterEvent()"
                      style="width: 35px;line-height: 38px;font-size: 25px;color: #3278F0"></i>
                 </div>
               </div>
@@ -38,7 +38,7 @@
           <div class="layui-col-xs6">
             <ul class="layui-tab-title timeTab">
               <li class="layui-this" onclick="changeView('month')">月视图</li>
-              <li onclick="changeView('basicWeek')">周视图</li>
+              <li onclick="changeView('agendaWeek')">周视图</li>
               <li onclick="changeView('agendaDay')">日视图</li>
             </ul>
           </div>
@@ -68,7 +68,12 @@
           </div>
 
         </div>
-        <div id="calendar"></div>
+        <div style="position: relative">
+          <div id="calendar"></div>
+          <button id="listChange"
+                  style="display:none;position: absolute; top: 8px;right: 20px;background: none;border: none;font-size: 20px;cursor: pointer"
+                  class="iconfont icon-liebiao" onclick="listChange()"></button>
+        </div>
       </div>
     </div>
   </div>
@@ -122,7 +127,7 @@
       for (let i = 0; i < data.length; i++) {
         optionLi += ("<option value=" + data[i].id + ">" + data[i].infoEntity.realName + "</option>")
       }
-      $("#teacherSelct").html(optionLi);
+      $("#teacherSelect").html(optionLi);
       form.render();
     })
 
@@ -138,9 +143,22 @@
     })
 
     // 监听select
-    form.on('select', (data) => {
-      console.log(data);
+    var filterTeacher = '';
+    var filterClass = '';
+    var filtetClRoom = '';
+    form.on("select(teacherFil)", function (data) {
+      filterTeacher = data.value;
     })
+
+    form.on("select(classFil)", function (data) {
+      filterClass = data.value;
+    })
+
+    form.on("select(classroomFil)", function (data) {
+      filtetClRoom = data.value;
+
+    })
+
 
     // 监听checkbox
     form.on('checkbox(selectCompany)', (data) => {
@@ -154,13 +172,14 @@
     });
 
     // 导出
-    // function exportExcel() {
-    //   $('#calendar').table2excel({
-    //     exclude: '',
-    //     name: 'Excel Document Name',
-    //     filename: '123',
-    //   })
-    // }
+    window.exportExcel = function() {
+      layer.msg('敬请期待');
+      // $('#calendar').table2excel({
+      //   exclude: '',
+      //   name: 'Excel Document Name',
+      //   filename: '123',
+      // })
+    }
 
     // color 集合
     const _COLOR = {
@@ -189,12 +208,30 @@
 
     // 切换视图(月，日，周)
     window.changeView = function (data) {
-      $('#calendar').fullCalendar('changeView', data)
+      $('#calendar').fullCalendar('changeView', data);
+      if (data == 'agendaWeek') {
+        $("#listChange").show();
+      } else {
+        $("#listChange").hide();
+      }
     }
+
+    window.listChange = function () {
+      if ($("#calendar").fullCalendar('getView').name == 'listWeek') {
+        $('#calendar').fullCalendar('changeView', 'agendaWeek')
+      } else {
+        $('#calendar').fullCalendar('changeView', 'listWeek')
+      }
+    }
+
+    window.filterEvent = function () {
+      $('#calendar').fullCalendar('refetchEvents');
+    }
+
 
     // 设置title
     function getTitle(data, type) {
-      if (type == "basicWeek") {
+      if (type == "basicWeek" || type == 'month') {
         return (data.classEntity.name ? data.classEntity.name : '') + ' ' + (data.teacherEntity.infoEntity.realName ? data.teacherEntity.infoEntity.realName : data.teacherEntity.infoEntity.nickName)
       } else {
         let textcont = (data.companyEntity.name ? ("校区：" + data.companyEntity.name + "\n") : '') +
@@ -225,7 +262,8 @@
       header: {
         left: "",
         center: "prev, title, next",
-        right: ""
+        right: "",
+
       },
       eventLimit: true, // 事件条数限制
 
@@ -234,7 +272,9 @@
         month: {
           columnFormat: "ddd",
           titleFormat: "YYYY年MM月",
-          eventLimit: 6
+          eventLimit: 6,
+          weekMode: "liquid",
+
         },
         week: {
           columnFormat: "ddd MM月DD日",
@@ -267,16 +307,17 @@
             let data = res.data;
             let evnetsData = [];
             let viewType = $("#calendar").fullCalendar('getView');
-
             data.forEach((item, index) => {
-              let obj = {
-                title: getTitle(item, viewType.name),
-                start: item.beginTime,
-                end: item.endTime,
-                color: getColor(item),
-                detail: item,
-              };
-              evnetsData.push(obj);
+              if ((filterTeacher.length > 0 ? item.teacherEntity.id.toString() == filterTeacher : true) && (filterClass > 0 ? item.classEntity.id.toString() == filterClass : true) && (filtetClRoom > 0 ? item.classroomEntity.id.toString() == filtetClRoom : true)) {
+                let obj = {
+                  title: getTitle(item, viewType.name),
+                  start: item.beginTime,
+                  end: item.endTime,
+                  color: getColor(item),
+                  detail: item,
+                };
+                evnetsData.push(obj);
+              }
             })
             callback(evnetsData);
           } else {
@@ -327,6 +368,7 @@
       dayClick(date, jsEvent, view) {
         let DateFlag = (new Date().format("yyyy-MM-dd")) <= date.format("YYYY-MM-DD");
         if (DateFlag) {
+          window.localStorage.removeItem('createByPlanResult');
           let viewType = $("#calendar").fullCalendar('getView').name;
           let courseDate = date.format("YYYY-MM-DD HH:mm");
           let courseTime = date.format("HH:mm");
@@ -354,20 +396,28 @@
 
     // 排课弹窗关闭事件
     function queryDialog() {
-      let clashFlag = window.localStorage.getItem('clash') ? true : false;
-      let createByPlanResult = JSON.parse(window.sessionStorage.getItem('createByPlanResult'))
-      if (createByPlanResult && createByPlanResult.newClash){
+      let createByPlanResult = JSON.parse(window.localStorage.getItem('createByPlanResult'))
+      if (createByPlanResult && createByPlanResult.code == 200) {
+        if (createByPlanResult.data.newClash && createByPlanResult.data.oldClash) {
           layer.open({
-              type: 2,
-              area: ['1180px', '680px'],
-              title: "排课冲突",
-              content: ['views/biz/inventory/timeTable/components/clash.html', 'yes'],
-              end: () => {
-                  queryclash();
+            type: 2,
+            area: ['1180px', '680px'],
+            title: "排课冲突",
+            content: ['views/biz/inventory/timeTable/components/clash.html', 'yes'],
+            end: () => {
+              queryclash();
+            },
+            cancel: function (index, layero) {
+              if (confirm('确定要关闭么')) { //只有当点击confirm框的确定时，该层才会关闭
+                layer.close(index)
               }
+              return false;
+            }
           });
-      }else if (createByPlanResult && createByPlanResult.code == 200){
-          layer.msg('排课成功');
+          return;
+        }
+        layer.msg('排课成功');
+        $('#calendar').fullCalendar('refetchEvents');
       }
     }
 

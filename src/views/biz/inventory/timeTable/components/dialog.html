@@ -36,7 +36,7 @@
             <div class="layui-col-xs5">
               <label class="layui-form-label selectLabel">班级:</label>
               <div class="layui-input-block">
-                <select name="classGrade" id="classGrade" lay-verify="classGrade">
+                <select name="classGrade" id="classGrade" lay-verify="classGrade" lay-filter="classGrade">
                   <option value="">请选择班级</option>
                 </select>
               </div>
@@ -221,7 +221,6 @@
       range: true, //或 range: '~' 来自定义分割字符
       btns: ['confirm', 'clear'],
       done: function (value, date, endate) {
-        console.log(value, date, endate);
         let bg = value.substring(0, 10);
         let ed = value.substring(13, 23);
         params.planBegin = bg;
@@ -258,11 +257,13 @@
     }
 
     // 获取班级列表
+    var classList = [];
     timeTable.selector(obj).then(res => {
       let data = res.data.list;
+      classList = data;
       let optionLi = '<option value="">请选择班级</option>';
       for (let i = 0; i < data.length; i++) {
-        optionLi += ("<option value=" + data[i].id + ">" + data[i].name + "</option>")
+        optionLi += ("<option title='" + data[i].courseEntity.isMoreCourse + "' value=" + data[i].id + ">" + data[i].name + "</option>")
       }
       $("#classGrade").html(optionLi)
       form.render();
@@ -293,27 +294,46 @@
       form.render();
     })
 
+    // form.on("select(classGrade)", (data) => {
+    //   console.log(data);
+    // })
+
 
     // 监听select
     form.on('select', (data) => {
       if (data.elem.id == "classGrade") {
         if ($("#classGrade").val()) {
-          console.log($("#classGrade").val())
           params.classId = $("#classGrade").val();
-          timeTable.subjectSelectorByClass($("#classGrade").val()).then(res => {
-            let subjectList = res.data.list;
-            let subjectOption = '<option value="">请选择科目</option>'
-            for (let k = 0; k < subjectList.length; k++) {
-              subjectOption += ("<option value=" + subjectList[k].courseEntity.id + ">" + subjectList[k].courseEntity.name + "</option>")
+          classList.forEach((item, index) => {
+            if (item.id == $("#classGrade").val()) {
+              if (item.courseEntity.isMoreCourse == 1) {
+                params.course = item.courseEntity.id;
+                let subjectList = JSON.parse(window.localStorage.getItem('classify')).subject;
+                let subjectOption = '<option value="">请选择科目</option>'
+                for (let k = 0; k < subjectList.length; k++) {
+                  subjectOption += ("<option value=" + subjectList[k].cValue + ">" + subjectList[k].cKey + "</option>")
+                }
+                $("#subject").html(subjectOption);
+                form.render();
+              } else if (item.courseEntity.isMoreCourse == 0) {
+                params.classId = $("#classGrade").val();
+                params.course = '';
+                timeTable.subjectSelectorByClass($("#classGrade").val()).then(res => {
+                  let subjectList = res.data.list;
+                  let subjectOption = '<option value="">请选择科目</option>'
+                  for (let k = 0; k < subjectList.length; k++) {
+                    subjectOption += ("<option value=" + subjectList[k].courseEntity.id + ">" + subjectList[k].courseEntity.name + "</option>")
+                  }
+                  $("#subject").html(subjectOption);
+                  form.render();
+                })
+              }
             }
-            console.log(subjectOption)
-            $("#subject").html(subjectOption);
-            form.render();
           })
         }
       } else if (data.elem.id == "subject") {
-        console.log($("#subject").val());
         params.classSubjectId = $("#subject").val();
+        params.subjectId = $("#subject").val();
       } else if (data.elem.id == 'teacher') {
         params.teacherId = $("#teacher").val();
       } else if (data.elem.id == 'teaching') {
@@ -326,7 +346,6 @@
 
     // 单次 重复选择
     form.on('checkbox(way)', function (data) {
-      console.log(data);
       $(".way").each(function () {
         this.checked = false;
       })
@@ -345,7 +364,6 @@
 
     // 是否跳过节假日
     form.on('switch(skip)', function (data) {
-      console.log(data.elem.checked);
       if (data.elem.checked) {
         params.holidays = '1'
       } else {
@@ -356,7 +374,6 @@
 
     // 重复方式
     form.on("select(repetitiveWay)", function (data) {
-      console.log(data);
       if (data.elem.value == "everyOtherDay") {
         $(".hint").show();
         $(".repetitionSetting").hide();
@@ -394,7 +411,6 @@
         }
       })
       params.week = week.substring(0, week.length - 1)
-      console.log(params.week)
       form.render();
     })
 
@@ -412,7 +428,6 @@
 
     // 是否检查冲突
     form.on("switch(clash)", function (data) {
-      console.log(data.elem.checked);
       if (data.elem.checked) {
         params.clash = "1";
       } else {
@@ -452,22 +467,11 @@
 
     // 提交
     form.on("submit(generate)", function (data) {
-      window.localStorage.removeItem('clash');
-      console.log(params);
       cfx.loading();
+      window.localStorage.removeItem('createByPlanResult');
       timeTable.createByPlan(params).then(res => {
         cfx.close();
-        window.sessionStorage.setItem('createByPlanResult', JSON.stringify(res));
-        if (res.data.newClash && res.data.oldClash) {
-          layer.msg('排课冲突!');
-          let clashData = {
-            newClash: res.data.newClash,
-            oldClash: res.data.oldClash
-          }
-          window.localStorage.setItem("clash", JSON.stringify(clashData));
-        }else {
-          layer.msg('排课成功!');
-        }
+        window.localStorage.setItem('createByPlanResult', JSON.stringify(res));
         var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
         parent.layer.close(index);
       })
@@ -475,17 +479,16 @@
     })
 
 
-      $(function () {
-          $("#count").on("input", function (e) {
-              console.log(e.target.value)
-              params.planCount = e.target.value;
-          })
-          $("#cancel").on("click", function (e) {
-              var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
-              parent.layer.close(index);
-              return false;
-          })
+    $(function () {
+      $("#count").on("input", function (e) {
+        params.planCount = e.target.value;
       })
+      $("#cancel").on("click", function (e) {
+        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+        parent.layer.close(index);
+        return false;
+      })
+    })
 
   });
 
