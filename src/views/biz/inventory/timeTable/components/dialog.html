@@ -192,8 +192,12 @@
     var form = layui.form; //只有执行了这一步，部分表单元素才会自动修饰成功
     var bgTime = null;
 
+    var timeScope = JSON.parse(window.localStorage.getItem('classify'));
+    var timeStart = timeScope.lessonTimeScope[0].cValue;
+    var timeEnd = timeScope.lessonTimeScope[1].cValue;
+    console.log(timeStart,timeEnd)
     let course = JSON.parse(window.localStorage.getItem("course"));
-    let couresTime = course.courseTime;
+    let couresTime = course.courseTime == '00:00' ? timeStart + ':00' : course.courseTime;
 
     var params = {
       assistantIds: '',
@@ -220,19 +224,24 @@
       elem: '#date',
       range: true, //或 range: '~' 来自定义分割字符
       btns: ['confirm', 'clear'],
+      min: new Date().format('yyyy-MM-dd'),
       done: function (value, date, endate) {
         let bg = value.substring(0, 10);
         let ed = value.substring(13, 23);
         params.planBegin = bg;
         params.planEnd = ed;
+        console.log(value);
       }
       // showBottom: false
     });
+
     laydate.render(({
       elem: "#timeStrat",
       type: 'time',
       value: couresTime,
       format: 'HH:mm',
+      min: timeStart + ':00:00',
+      max: timeEnd + ':00:00',
       btns: ['confirm', 'clear'],
       done: function (value, date, endDate) {
         // bgTime = moment([date.year, date.month, date.date, date.hours, date.minutes]);
